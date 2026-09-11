@@ -149,14 +149,20 @@ input,select{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:8px;
-  height:690px;
+  height:730px;
   align-content:stretch
 }
 .poster-col{
   display:flex;
   flex-direction:column;
-  gap:6px;
+  gap:8px;
   height:100%;
+}
+.poster-col .day-card{
+  flex:1 1 0;
+}
+.poster-col .info-card{
+  flex:1 1 0;
 }
 .day-card{
   position:relative;
@@ -193,12 +199,12 @@ input,select{
   margin-bottom:6px
 }
 .day-card-head .day{
-  font-size:31px;font-weight:800;text-transform:uppercase
+  font-size:34px;font-weight:800;text-transform:uppercase
 }
-.day-card-head .date{font-size:16px;font-weight:800}
+.day-card-head .date{font-size:17px;font-weight:800}
 .section-title{
   display:flex;align-items:center;gap:8px;
-  font-size:16px;font-weight:900;text-transform:uppercase;margin:7px 0 4px;
+  font-size:17px;font-weight:900;text-transform:uppercase;margin:7px 0 4px;
   letter-spacing:.02em
 }
 .section-title.main-title{
@@ -211,9 +217,9 @@ input,select{
 
 .section-title:after{content:"";height:1px;background:#111;flex:1}
 .menu-row{
-  display:grid;grid-template-columns:27px 1fr 54px 62px;
+  display:grid;grid-template-columns:29px 1fr 58px 66px;
   gap:6px;align-items:start;
-  font-size:15.5px;line-height:1.14;padding:3.2px 0;
+  font-size:17px;line-height:1.16;padding:4.2px 0;
   border-bottom:1px dotted #bdbdbd;
   position:relative;z-index:1
 }
@@ -242,8 +248,8 @@ input,select{
   display:block;
   margin-top:2px;
   font-family:Arial,sans-serif;
-  font-size:13px;
-  line-height:1.1;
+  font-size:14.5px;
+  line-height:1.12;
   font-weight:600;
 }
 
@@ -343,7 +349,7 @@ input,select{
     max-width:210mm !important;
     max-height:297mm !important;
     margin:0 !important;
-    padding:5mm 5.5mm 4.5mm !important;
+    padding:3.5mm 4mm 3mm !important;
     box-shadow:none !important;
     overflow:hidden !important;
     transform:none !important;
@@ -354,20 +360,24 @@ input,select{
     break-after:avoid-page !important;
   }
   .brand-small{font-size:9pt}
-  .brand-name{font-size:17pt}
+  .brand-name{font-size:16pt}
   .brand-city{font-size:6.5pt}
-  .menu-script{font-size:20pt}
+  .menu-script{font-size:18pt}
   .menu-sub{font-size:7pt}
-  .motto .script{font-size:12pt}
+  .motto .script{font-size:11pt}
   .poster-grid{
     min-height:0 !important;
-    height:180mm !important;
-    gap:2mm !important;
+    height:187mm !important;
+    gap:2.2mm !important;
   }
   .poster-col{
-    height:180mm !important;
-    justify-content:flex-start;
-    gap:2mm !important;
+    height:187mm !important;
+    justify-content:stretch !important;
+    gap:2.2mm !important;
+  }
+  .poster-col .day-card,
+  .poster-col .info-card{
+    flex:1 1 0 !important;
   }
   .day-card{
     padding:1.8mm 2.2mm 1.5mm;
@@ -380,17 +390,17 @@ input,select{
   .poster-col:last-child .day-card{
     flex:1 1 0;
   }
-  .day-card-head .day{font-size:19pt}
-  .day-card-head .date{font-size:10pt}
-  .section-title{font-size:11.5pt}
+  .day-card-head .day{font-size:21pt}
+  .day-card-head .date{font-size:11pt}
+  .section-title{font-size:12.5pt}
   .menu-row{
     grid-template-columns:6mm 1fr 13mm 14mm;
-    gap:1.2mm;font-size:10.5pt;line-height:1.06;padding:.35mm 0
+    gap:1.2mm;font-size:11.6pt;line-height:1.08;padding:.5mm 0
   }
   .menu-row.main{padding:.7mm 0 .8mm}
   .menu-row.main .num{
     width:4.4mm;height:4.4mm;line-height:4mm;
-    font-size:9.8pt
+    font-size:10.8pt
   }
   .section-title.main-title{
     padding:.8mm 1.5mm;
@@ -398,7 +408,7 @@ input,select{
   }
   .side-line{display:none}
   .inline-side{
-    font-size:8.4pt;
+    font-size:9.3pt;
     line-height:1.04;
     margin-top:.3mm;
     font-weight:600;
@@ -520,7 +530,7 @@ input,select{
 </div>
 
 <script>
-const STORE="dailyMenuV28";
+const STORE="dailyMenuV29";
 const DAYS=["Pondelok","Utorok","Streda","Štvrtok","Piatok"];
 const $=id=>document.getElementById(id);
 const uid=()=>Math.random().toString(36).slice(2)+Date.now().toString(36);
