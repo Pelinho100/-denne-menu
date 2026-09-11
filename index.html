@@ -91,24 +91,24 @@ input,select{
 .preview-title{font-size:20px;font-weight:800;margin:0 0 10px}
 .a4-stage{overflow:auto;background:#ddd;border-radius:16px;padding:10px}
 .a4{
-  width:794px;
-  height:1123px;
+  width:1123px;
+  height:794px;
   margin:0 auto;
   background:#fff;
   overflow:hidden;
   color:#111;
   box-shadow:0 4px 18px rgba(0,0,0,.13);
-  padding:14px 16px 12px;
+  padding:14px 18px 12px;
   font-family:Georgia,"Times New Roman",serif;
 }
 
 /* header inspired by approved design */
 .poster-head{
   display:grid;
-  grid-template-columns:1fr 1.35fr 1fr;
+  grid-template-columns:1fr 1.3fr 1fr;
   align-items:end;
-  gap:10px;
-  margin-bottom:7px
+  gap:12px;
+  margin-bottom:6px
 }
 .brand-block{text-align:center}
 .brand-small{
@@ -149,20 +149,20 @@ input,select{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:8px;
-  height:1035px;
+  height:690px;
   align-content:stretch
 }
 .poster-col{
   display:flex;
   flex-direction:column;
-  gap:8px;
+  gap:6px;
   height:100%;
 }
 .day-card{
   position:relative;
   border:1.5px solid #111;
   border-radius:11px;
-  padding:9px 10px 8px;
+  padding:8px 12px 7px;
   overflow:hidden;
   background:#fff;
   flex:1 1 0;
@@ -193,12 +193,12 @@ input,select{
   margin-bottom:6px
 }
 .day-card-head .day{
-  font-size:29px;font-weight:800;text-transform:uppercase
+  font-size:31px;font-weight:800;text-transform:uppercase
 }
-.day-card-head .date{font-size:15px;font-weight:800}
+.day-card-head .date{font-size:16px;font-weight:800}
 .section-title{
   display:flex;align-items:center;gap:8px;
-  font-size:15px;font-weight:900;text-transform:uppercase;margin:7px 0 4px;
+  font-size:16px;font-weight:900;text-transform:uppercase;margin:7px 0 4px;
   letter-spacing:.02em
 }
 .section-title.main-title{
@@ -211,9 +211,9 @@ input,select{
 
 .section-title:after{content:"";height:1px;background:#111;flex:1}
 .menu-row{
-  display:grid;grid-template-columns:24px 1fr 48px 56px;
-  gap:5px;align-items:start;
-  font-size:14px;line-height:1.16;padding:4px 0;
+  display:grid;grid-template-columns:27px 1fr 54px 62px;
+  gap:6px;align-items:start;
+  font-size:15.5px;line-height:1.14;padding:3.2px 0;
   border-bottom:1px dotted #bdbdbd;
   position:relative;z-index:1
 }
@@ -228,9 +228,9 @@ input,select{
   text-align:center;
   border:1px solid #111;
   border-radius:50%;
-  width:20px;
-  height:20px;
-  line-height:18px;
+  width:22px;
+  height:22px;
+  line-height:20px;
   margin-top:-1px;
 }
 .menu-row.soup .num{
@@ -242,8 +242,8 @@ input,select{
   display:block;
   margin-top:2px;
   font-family:Arial,sans-serif;
-  font-size:11.5px;
-  line-height:1.12;
+  font-size:13px;
+  line-height:1.1;
   font-weight:600;
 }
 
@@ -253,8 +253,8 @@ input,select{
 .menu-row .name{min-width:0}
 .side-line{display:none}
 .info-card{
-  border:1.5px solid #111;border-radius:11px;padding:10px 12px 8px;
-  display:grid;grid-template-columns:1fr 1.2fr;gap:14px;align-items:center;
+  border:1.5px solid #111;border-radius:11px;padding:10px 16px 8px;
+  display:grid;grid-template-columns:1fr 1.3fr;gap:18px;align-items:center;
   flex:1 1 0;
   min-height:0
 }
@@ -313,22 +313,22 @@ input,select{
 }
 
 @media print{
-  @page{size:A4 portrait;margin:0}
+  @page{size:A4 landscape;margin:0}
   body{background:#fff}
   header,.editor,.preview-title{display:none!important}
   .wrap{max-width:none;padding:0;margin:0}
   .preview-wrap{margin:0}
   .a4-stage{padding:0;background:#fff;overflow:visible}
   html,body{
-    width:210mm !important;
-    height:297mm !important;
+    width:297mm !important;
+    height:210mm !important;
     margin:0 !important;
     padding:0 !important;
     overflow:hidden !important;
   }
   .wrap,.preview-wrap,.a4-stage{
-    width:210mm !important;
-    height:297mm !important;
+    width:297mm !important;
+    height:210mm !important;
     max-width:none !important;
     margin:0 !important;
     padding:0 !important;
@@ -336,8 +336,8 @@ input,select{
     background:#fff !important;
   }
   .a4{
-    width:210mm !important;
-    height:297mm !important;
+    width:297mm !important;
+    height:210mm !important;
     min-width:210mm !important;
     min-height:297mm !important;
     max-width:210mm !important;
@@ -354,18 +354,18 @@ input,select{
     break-after:avoid-page !important;
   }
   .brand-small{font-size:9pt}
-  .brand-name{font-size:18pt}
+  .brand-name{font-size:17pt}
   .brand-city{font-size:6.5pt}
-  .menu-script{font-size:22pt}
+  .menu-script{font-size:20pt}
   .menu-sub{font-size:7pt}
-  .motto .script{font-size:13pt}
+  .motto .script{font-size:12pt}
   .poster-grid{
     min-height:0 !important;
-    height:262mm !important;
+    height:180mm !important;
     gap:2mm !important;
   }
   .poster-col{
-    height:262mm !important;
+    height:180mm !important;
     justify-content:flex-start;
     gap:2mm !important;
   }
@@ -380,17 +380,17 @@ input,select{
   .poster-col:last-child .day-card{
     flex:1 1 0;
   }
-  .day-card-head .day{font-size:18pt}
-  .day-card-head .date{font-size:9.5pt}
-  .section-title{font-size:10.5pt}
+  .day-card-head .day{font-size:19pt}
+  .day-card-head .date{font-size:10pt}
+  .section-title{font-size:11.5pt}
   .menu-row{
-    grid-template-columns:5mm 1fr 10mm 11mm;
-    gap:1mm;font-size:9.2pt;line-height:1.08;padding:.45mm 0
+    grid-template-columns:6mm 1fr 13mm 14mm;
+    gap:1.2mm;font-size:10.5pt;line-height:1.06;padding:.35mm 0
   }
   .menu-row.main{padding:.7mm 0 .8mm}
   .menu-row.main .num{
     width:4.4mm;height:4.4mm;line-height:4mm;
-    font-size:8.8pt
+    font-size:9.8pt
   }
   .section-title.main-title{
     padding:.8mm 1.5mm;
@@ -398,9 +398,9 @@ input,select{
   }
   .side-line{display:none}
   .inline-side{
-    font-size:7.2pt;
-    line-height:1.05;
-    margin-top:.35mm;
+    font-size:8.4pt;
+    line-height:1.04;
+    margin-top:.3mm;
     font-weight:600;
   }
   .info-card{
@@ -409,8 +409,8 @@ input,select{
     padding:3mm;
   }
   .info-message .script{font-size:15pt}
-  .info-brand{font-size:11pt}
-  .info-lines{font-size:7pt}
+  .info-brand{font-size:12pt}
+  .info-lines{font-size:8pt}
   .info-line{grid-template-columns:5mm 1fr;gap:1mm;margin:1.4mm 0}
   .info-bottom{font-size:6pt}
   .poster-foot{
@@ -520,7 +520,7 @@ input,select{
 </div>
 
 <script>
-const STORE="dailyMenuV27";
+const STORE="dailyMenuV28";
 const DAYS=["Pondelok","Utorok","Streda","Štvrtok","Piatok"];
 const $=id=>document.getElementById(id);
 const uid=()=>Math.random().toString(36).slice(2)+Date.now().toString(36);
@@ -829,9 +829,9 @@ function renderPreview(){
 function fitPreview(){
   if(window.innerWidth>820){$("a4").style.transform="none";$("a4").style.marginBottom="0";return}
   const stage=document.querySelector(".a4-stage");
-  const scale=Math.min(1,(stage.clientWidth||window.innerWidth)/794);
+  const scale=Math.min(1,(stage.clientWidth||window.innerWidth)/1123);
   $("a4").style.transform=`scale(${scale})`;
-  $("a4").style.marginBottom=`${-(1123*(1-scale))}px`;
+  $("a4").style.marginBottom=`${-(794*(1-scale))}px`;
 }
 function renderDb(){
   const q=$("dbSearch").value.toLowerCase(),host=$("dbList");host.innerHTML="";
@@ -893,23 +893,23 @@ $("printBtn").onclick=async()=>{
       backgroundColor:"#ffffff",
       useCORS:true,
       logging:false,
-      width:794,
-      height:1123,
-      windowWidth:794,
-      windowHeight:1123
+      width:1123,
+      height:794,
+      windowWidth:1123,
+      windowHeight:794
     });
 
     const img=canvas.toDataURL("image/png");
     const {jsPDF}=window.jspdf;
     const pdf=new jsPDF({
-      orientation:"portrait",
+      orientation:"landscape",
       unit:"mm",
       format:"a4",
       compress:true
     });
 
     // Edge-to-edge A4 artwork. No browser URL/date/footer will be added.
-    pdf.addImage(img,"PNG",0,0,210,297,undefined,"FAST");
+    pdf.addImage(img,"PNG",0,0,297,210,undefined,"FAST");
 
     const blob=pdf.output("blob");
     const url=URL.createObjectURL(blob);
