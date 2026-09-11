@@ -45,30 +45,31 @@ input,select{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;ba
 .a4-stage{overflow:auto;background:#dcdcdc;border-radius:16px;padding:10px}
 .a4{
   width:794px;
-  min-height:1123px;
+  height:1123px;
+  overflow:hidden;
   margin:0 auto;
   background:#fff;
   color:#111;
-  padding:34px 38px 28px;
+  padding:26px 30px 22px;
   box-shadow:0 4px 18px rgba(0,0,0,.12);
   font-family:Georgia,"Times New Roman",serif;
 }
 .a4-head{text-align:center;border-bottom:2px solid #111;padding-bottom:12px;margin-bottom:14px}
 .a4-rest{font-size:19px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
-.a4-title{font-size:34px;font-weight:800;letter-spacing:.02em;margin:3px 0}
-.a4-meta{display:flex;justify-content:space-between;gap:20px;font-family:Arial,sans-serif;font-size:12px;font-weight:700}
+.a4-title{font-size:31px;font-weight:800;letter-spacing:.02em;margin:2px 0}
+.a4-meta{display:flex;justify-content:space-between;gap:20px;font-family:Arial,sans-serif;font-size:11px;font-weight:700}
 .week-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid #111;border-left:1px solid #111}
 .day-box{padding:10px 12px 8px;border-right:1px solid #111;border-bottom:1px solid #111;min-height:265px}
 .day-box.friday{grid-column:1/-1;min-height:235px}
 .day-title{display:flex;justify-content:space-between;align-items:baseline;gap:10px;border-bottom:1px solid #111;padding-bottom:4px;margin-bottom:6px}
-.day-title b{font-family:Arial,sans-serif;font-size:16px}
-.day-title span{font-family:Arial,sans-serif;font-size:11px;font-weight:700}
-.section-label{font-family:Arial,sans-serif;font-size:10px;font-weight:800;text-transform:uppercase;margin:4px 0 2px;letter-spacing:.04em}
-.menu-line{display:grid;grid-template-columns:18px 1fr 54px;gap:5px;align-items:start;font-size:10.2px;line-height:1.22;padding:1.2px 0}
+.day-title b{font-family:Arial,sans-serif;font-size:15px}
+.day-title span{font-family:Arial,sans-serif;font-size:10px;font-weight:700}
+.section-label{font-family:Arial,sans-serif;font-size:9px;font-weight:800;text-transform:uppercase;margin:3px 0 1px;letter-spacing:.04em}
+.menu-line{display:grid;grid-template-columns:17px 1fr 52px;gap:4px;align-items:start;font-size:9.5px;line-height:1.16;padding:0.8px 0}
 .menu-line .num{font-weight:700}
 .menu-line .price{text-align:right;white-space:nowrap;font-family:Arial,sans-serif;font-size:9.4px;font-weight:700}
 .menu-line .all{font-size:9px}
-.menu-side{font-size:8.7px;line-height:1.15;margin:0 0 1px 23px;color:#222}
+.menu-side{font-size:8px;line-height:1.08;margin:0 0 0.5px 21px;color:#222}
 .a4-foot{display:flex;justify-content:space-between;gap:12px;border-top:2px solid #111;margin-top:12px;padding-top:7px;font-family:Arial,sans-serif;font-size:9px}
 .a4-foot .left{font-weight:700}
 
@@ -92,19 +93,19 @@ input,select{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;ba
  .wrap{max-width:none;padding:0;margin:0}
  .preview-wrap{margin:0}
  .a4-stage{padding:0;background:#fff;overflow:visible}
- .a4{width:210mm;min-height:297mm;margin:0;padding:9mm 10mm 8mm;box-shadow:none}
+ .a4{width:210mm;height:297mm;overflow:hidden;margin:0;padding:7mm 8mm 6mm;box-shadow:none;page-break-after:avoid;break-after:avoid}
  .a4-rest{font-size:13pt}
  .a4-title{font-size:24pt}
  .a4-meta{font-size:8.5pt}
- .day-box{min-height:67mm;padding:2.8mm 3mm 2mm}
- .day-box.friday{min-height:58mm}
- .day-title b{font-size:10.5pt}
- .day-title span{font-size:7.5pt}
- .section-label{font-size:6.6pt}
- .menu-line{font-size:6.6pt;line-height:1.17;grid-template-columns:4mm 1fr 14mm;gap:1.2mm;padding:.35mm 0}
- .menu-line .price{font-size:6.2pt}
- .menu-side{font-size:5.8pt;margin-left:5.2mm}
- .a4-foot{font-size:6.2pt}
+ .day-box{min-height:62mm;padding:2.2mm 2.5mm 1.6mm}
+ .day-box.friday{min-height:50mm}
+ .day-title b{font-size:9.8pt}
+ .day-title span{font-size:6.8pt}
+ .section-label{font-size:6pt}
+ .menu-line{font-size:6pt;line-height:1.1;grid-template-columns:3.5mm 1fr 13mm;gap:1mm;padding:.22mm 0}
+ .menu-line .price{font-size:5.7pt}
+ .menu-side{font-size:5.2pt;margin-left:4.6mm}
+ .a4-foot{font-size:5.8pt}
 }
 </style>
 </head>
@@ -135,7 +136,7 @@ input,select{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;ba
     <div><label>Nadpis</label><input id="title"></div>
     <div><label>Dátum pondelka</label><input id="mondayDate" type="date"></div>
    </div>
-   <div class="help"><b>Nastavíš iba pondelok.</b> Utorok až piatok sa dopočítajú automaticky. Menu je upravené tak, aby sa celý týždeň vytlačil na jednu A4.</div>
+   <div class="help"><b>Nastavíš iba pondelok.</b> Utorok až piatok sa dopočítajú automaticky. Menu je natlačené presne na jednu A4. Pri tlači sa editor skryje a vytlačí sa iba hotový lístok.</div>
   </div>
   <div id="days"></div>
  </div>
@@ -183,7 +184,7 @@ input,select{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;ba
 <datalist id="sideList"></datalist>
 
 <script>
-const STORE="dailyMenuV14";
+const STORE="dailyMenuV15";
 const DAYS=["Pondelok","Utorok","Streda","Štvrtok","Piatok"];
 const $=id=>document.getElementById(id);
 const uid=()=>Math.random().toString(36).slice(2)+Date.now().toString(36);
