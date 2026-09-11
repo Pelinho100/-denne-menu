@@ -209,10 +209,9 @@ input,select{
   position:relative;z-index:1
 }
 .menu-row.main{
-  padding:3px 0 4px;
-  border-bottom:1px dotted #c8c8c8;
+  padding:3px 0 1px;
+  border-bottom:0;
 }
-.menu-row.main:last-of-type{border-bottom:0}
 .menu-row.main .num{
   font-family:Arial,sans-serif;
   font-size:11px;
@@ -236,9 +235,13 @@ input,select{
 .menu-row .price{text-align:right;white-space:nowrap;font-weight:800}
 .menu-row .name{min-width:0}
 .side-line{
-  margin:0 0 1px 22px;
-  font-size:8.4px;line-height:1.1;
-  position:relative;z-index:1
+  margin:0 0 4px 22px;
+  padding:0 0 4px 0;
+  font-size:8.4px;
+  line-height:1.1;
+  position:relative;
+  z-index:1;
+  border-bottom:1px dotted #c8c8c8;
 }
 .info-card{
   border:1.5px solid #111;border-radius:11px;padding:14px 14px 10px;
@@ -333,7 +336,12 @@ input,select{
     padding:.8mm 1.5mm;
     margin:1.6mm 0 1mm
   }
-  .side-line{font-size:5pt;margin-left:5mm}
+  .side-line{
+    font-size:5pt;
+    margin-left:5mm;
+    margin-bottom:1mm;
+    padding-bottom:1mm;
+  }
   .info-card{min-height:48mm;padding:3mm}
   .info-message .script{font-size:16pt}
   .info-brand{font-size:12pt}
@@ -441,7 +449,7 @@ input,select{
 </div>
 
 <script>
-const STORE="dailyMenuV22";
+const STORE="dailyMenuV23";
 const DAYS=["Pondelok","Utorok","Streda","Štvrtok","Piatok"];
 const $=id=>document.getElementById(id);
 const uid=()=>Math.random().toString(36).slice(2)+Date.now().toString(36);
@@ -711,8 +719,28 @@ function makeDayCard(day){
     const r=document.createElement("div");r.className="menu-row main";
     r.innerHTML=`<div class="num">${esc(it.code)}</div><div class="name">${esc(it.name)}${it.allergens?` (${esc(it.allergens)})`:""}</div><div class="weight">${esc(it.weight)}</div><div class="price">${esc(money(it.price))}</div>`;
     sec.appendChild(r);
-    if(it.side){const s=document.createElement("div");s.className="side-line";s.innerHTML=`<b>Príloha:</b> ${esc(it.side)}`;sec.appendChild(s)}
-    (it.extras||[]).forEach(ex=>{if(ex.text){const s=document.createElement("div");s.className="side-line";s.innerHTML=`<b>${esc(ex.label)}:</b> ${esc(ex.text)}`;sec.appendChild(s)}})
+    let hasSide=false;
+    if(it.side){
+      const s=document.createElement("div");
+      s.className="side-line";
+      s.innerHTML=`<b>Príloha:</b> ${esc(it.side)}`;
+      sec.appendChild(s);
+      hasSide=true;
+    }
+    (it.extras||[]).forEach(ex=>{
+      if(ex.text){
+        const s=document.createElement("div");
+        s.className="side-line";
+        s.innerHTML=`<b>${esc(ex.label)}:</b> ${esc(ex.text)}`;
+        sec.appendChild(s);
+        hasSide=true;
+      }
+    });
+    if(!hasSide){
+      r.style.borderBottom="1px dotted #c8c8c8";
+      r.style.paddingBottom="4px";
+      r.style.marginBottom="4px";
+    }
   });
   return sec;
 }
