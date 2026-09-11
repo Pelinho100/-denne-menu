@@ -116,11 +116,20 @@ input,select{width:100%;padding:10px;border:1px solid #ccc;border-radius:10px;ba
     <input id="restaurantName" value="Reštaurácia U Mastina">
    </div>
    <div>
+    <label>Telefón na objednávky</label>
+    <input id="phoneNumber" value="0900 123 456" placeholder="napr. 0900 123 456">
+   </div>
+   <div>
     <label>Nadpis</label>
     <input id="menuTitle" value="DENNÉ MENU">
    </div>
+   <div>
+    <label>Dátum pondelka</label>
+    <input id="mondayDate" type="date">
+   </div>
   </div>
-  <div class="helper">Položky sa zobrazujú a tlačia číslované 1., 2., 3., 4., 5. Pri jedle môžeš meniť názov, cenu, alergény aj prílohu.</div>
+  <div class="helper"><b>Dátum stačí zmeniť pri pondelku.</b> Utorok až piatok sa dopočítajú automaticky. Pri každom dni môžeš pridávať a odoberať polievky aj hlavné jedlá a meniť názvy, prílohy, alergény aj ceny.</div>
+  <div class="helper">Dátum stačí zmeniť pri pondelku a ostatné dni sa dopočítajú automaticky.</div>
   <div id="days"></div>
  </div>
 
@@ -152,6 +161,7 @@ input,select{width:100%;padding:10px;border:1px solid #ccc;border-radius:10px;ba
   <div class="previewTitle">Náhľad hotového jedálneho lístka</div>
   <div class="printCard">
    <div id="pvRestaurant" class="printRestaurant"></div>
+   <div id="pvPhone" style="text-align:center;font-weight:700;margin-bottom:6px"></div>
    <h2 id="pvTitle" class="printMain">DENNÉ MENU</h2>
    <div id="pvRange" class="printRange"></div>
    <div id="pvDays"></div>
@@ -165,7 +175,7 @@ input,select{width:100%;padding:10px;border:1px solid #ccc;border-radius:10px;ba
 
 <script>
 const $=id=>document.getElementById(id);
-const STORE="dailyMenuV10";
+const STORE="dailyMenuV12";
 const DAYS=["Pondelok","Utorok","Streda","Štvrtok","Piatok"];
 function uid(){return "id_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,8)}
 function monday(){const d=new Date();d.setHours(12,0,0,0);const n=d.getDay()||7;d.setDate(d.getDate()-n+1);return d}
@@ -250,7 +260,7 @@ function makeInitialDays(){
 }
 let state;
 try{state=JSON.parse(localStorage.getItem(STORE)||"null")}catch(e){state=null}
-if(!state)state={restaurant:"Reštaurácia U Mastina",title:"DENNÉ MENU",db:seedDb,days:makeInitialDays()};
+if(!state)state={restaurant:"Reštaurácia U Mastina",phone:"0900 123 456",title:"DENNÉ MENU",db:seedDb,days:makeInitialDays()};
 function save(){localStorage.setItem(STORE,JSON.stringify(state))}
 
 function refreshDatalists(){
@@ -265,7 +275,16 @@ function refreshDatalists(){
 }
 
 function normalizeCodes(day){
- day.items.forEach((it,i)=>it.code=`${i+1}.`);
+ let soupN=0, mainN=0;
+ day.items.forEach(it=>{
+   if(it.category==="Polievka"){
+     it.code=String.fromCharCode(65+soupN)+".";
+     soupN++;
+   }else{
+     mainN++;
+     it.code=`${mainN}.`;
+   }
+ });
 }
 
 function applyDish(item,name){
@@ -277,15 +296,17 @@ function applyDish(item,name){
 
 function renderMenu(){
  refreshDatalists();
- $("restaurantName").value=state.restaurant;$("menuTitle").value=state.title;
+ $("restaurantName").value=state.restaurant;
+ $("phoneNumber").value=state.phone||"";
+ $("menuTitle").value=state.title;
+ $("mondayDate").value=state.days[0]?.date||"";
  const host=$("days");host.innerHTML="";
  state.days.forEach((day,di)=>{
   normalizeCodes(day);
   const card=document.createElement("div");card.className="day";
   const head=document.createElement("div");head.className="dayhead";
   const title=document.createElement("strong");title.textContent=day.day;
-  const date=document.createElement("input");date.type="date";date.value=day.date;
-  date.onchange=()=>{day.date=date.value;save();renderPreview()};
+  const date=document.createElement("input");date.type="date";date.value=day.date;date.readOnly=true;
   head.append(title,date);card.appendChild(head);
 
   const rows=document.createElement("div");rows.className="rows";
@@ -336,12 +357,13 @@ function renderMenu(){
   card.appendChild(rows);
 
   const add=document.createElement("div");add.className="addline";
-  const btn=document.createElement("button");btn.className="gray";btn.textContent="+ Pridať položku";
-  btn.onclick=()=>{day.items.push({id:uid(),code:`${day.items.length+1}.`,category:"Hlavné jedlo",sourceName:"",name:"",weight:"150 g",price:"7,50",allergens:"",side:"",extras:[]});save();renderMenu();renderPreview()};
-  const copy=document.createElement("button");copy.className="gray";copy.textContent="Kopírovať z predošlého dňa";
-  copy.style.marginLeft="8px";
-  copy.onclick=()=>{if(di===0)return;day.items=JSON.parse(JSON.stringify(state.days[di-1].items)).map((x,idx)=>({...x,id:uid(),code:`${idx+1}.`}));save();renderMenu();renderPreview()};
-  add.append(btn,copy);card.appendChild(add);
+  const addSoup=document.createElement("button");addSoup.className="gray";addSoup.textContent="+ Polievka";
+  addSoup.onclick=()=>{day.items.unshift({id:uid(),code:"",category:"Polievka",sourceName:"",name:"",weight:"0,33 l",price:"2,20",allergens:"",side:"",extras:[]});save();renderMenu();renderPreview()};
+  const addMain=document.createElement("button");addMain.className="gray";addMain.textContent="+ Hlavné jedlo";addMain.style.marginLeft="8px";
+  addMain.onclick=()=>{day.items.push({id:uid(),code:"",category:"Hlavné jedlo",sourceName:"",name:"",weight:"150 g",price:"7,50",allergens:"",side:"",extras:[]});save();renderMenu();renderPreview()};
+  const copy=document.createElement("button");copy.className="gray";copy.textContent="Kopírovať z predošlého dňa";copy.style.marginLeft="8px";
+  copy.onclick=()=>{if(di===0)return;day.items=JSON.parse(JSON.stringify(state.days[di-1].items)).map(x=>({...x,id:uid()}));save();renderMenu();renderPreview()};
+  add.append(addSoup,addMain,copy);card.appendChild(add);
   host.appendChild(card);
  });
  save();
@@ -356,6 +378,7 @@ function dateRangeText(){
 function renderPreview(){
  $("pvTitle").textContent=state.title;
  $("pvRestaurant").textContent=state.restaurant;
+ $("pvPhone").textContent=state.phone ? `Objednávky: ${state.phone}` : "";
  $("pvRange").textContent=dateRangeText();
  const host=$("pvDays");host.innerHTML="";
  state.days.forEach(day=>{
@@ -392,7 +415,17 @@ function clearDb(){
 }
 
 $("restaurantName").oninput=()=>{state.restaurant=$("restaurantName").value;save();renderPreview()};
+$("phoneNumber").oninput=()=>{state.phone=$("phoneNumber").value;save();renderPreview()};
 $("menuTitle").oninput=()=>{state.title=$("menuTitle").value;save();renderPreview()};
+$("mondayDate").onchange=()=>{
+ const base=parseISO($("mondayDate").value);
+ state.days.forEach((day,i)=>{
+   const d=new Date(base);
+   d.setDate(base.getDate()+i);
+   day.date=iso(d);
+ });
+ save();renderMenu();renderPreview();
+};
 $("tabMenu").onclick=()=>{$("menuPanel").classList.remove("hidden");$("dbPanel").classList.add("hidden");$("tabMenu").classList.add("active");$("tabDb").classList.remove("active")};
 $("tabDb").onclick=()=>{$("menuPanel").classList.add("hidden");$("dbPanel").classList.remove("hidden");$("tabDb").classList.add("active");$("tabMenu").classList.remove("active")};
 $("saveDb").onclick=()=>{
