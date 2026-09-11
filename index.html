@@ -98,7 +98,7 @@ input,select{
   overflow:hidden;
   color:#111;
   box-shadow:0 4px 18px rgba(0,0,0,.13);
-  padding:22px 22px 18px;
+  padding:14px 16px 12px;
   font-family:Georgia,"Times New Roman",serif;
 }
 
@@ -149,17 +149,23 @@ input,select{
   display:grid;
   grid-template-columns:1fr 1fr;
   gap:8px;
-  min-height:248mm;
-  align-content:start
+  height:1000px;
+  align-content:stretch
 }
-.poster-col{display:flex;flex-direction:column;gap:8px}
+.poster-col{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  height:100%;
+}
 .day-card{
   position:relative;
   border:1.5px solid #111;
   border-radius:11px;
-  padding:10px 12px 9px;
+  padding:12px 13px 10px;
   overflow:hidden;
   background:#fff;
+  flex:1 1 0;
 }
 .day-card:after{
   content:"";
@@ -187,9 +193,9 @@ input,select{
   margin-bottom:6px
 }
 .day-card-head .day{
-  font-size:24px;font-weight:800;text-transform:uppercase
+  font-size:26px;font-weight:800;text-transform:uppercase
 }
-.day-card-head .date{font-size:13px;font-weight:800}
+.day-card-head .date{font-size:14px;font-weight:800}
 .section-title{
   display:flex;align-items:center;gap:8px;
   font-size:13px;font-weight:900;text-transform:uppercase;margin:7px 0 4px;
@@ -207,7 +213,7 @@ input,select{
 .menu-row{
   display:grid;grid-template-columns:22px 1fr 42px 48px;
   gap:5px;align-items:start;
-  font-size:10px;line-height:1.2;padding:2.2px 0;
+  font-size:11px;line-height:1.22;padding:2.8px 0;
   position:relative;z-index:1
 }
 .menu-row.main{
@@ -239,16 +245,17 @@ input,select{
 .side-line{
   margin:0 0 4px 22px;
   padding:0 0 4px 0;
-  font-size:8.4px;
+  font-size:9.2px;
   line-height:1.1;
   position:relative;
   z-index:1;
   border-bottom:1px dotted #c8c8c8;
 }
 .info-card{
-  border:1.5px solid #111;border-radius:11px;padding:14px 14px 10px;
+  border:1.5px solid #111;border-radius:11px;padding:16px 16px 12px;
   display:grid;grid-template-columns:1fr 1.2fr;gap:14px;align-items:center;
-  min-height:185px
+  flex:1 1 0;
+  min-height:0
 }
 .info-message{text-align:center}
 .info-message .script{
@@ -353,11 +360,11 @@ input,select{
   .motto .script{font-size:16pt}
   .poster-grid{
     min-height:0 !important;
-    height:249mm !important;
+    height:262mm !important;
     gap:2mm !important;
   }
   .poster-col{
-    height:249mm !important;
+    height:262mm !important;
     justify-content:flex-start;
     gap:2mm !important;
   }
@@ -411,6 +418,8 @@ input,select{
   }
 }
 </style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 <body>
 <header>
@@ -509,7 +518,7 @@ input,select{
 </div>
 
 <script>
-const STORE="dailyMenuV24";
+const STORE="dailyMenuV25";
 const DAYS=["Pondelok","Utorok","Streda","Štvrtok","Piatok"];
 const $=id=>document.getElementById(id);
 const uid=()=>Math.random().toString(36).slice(2)+Date.now().toString(36);
@@ -876,22 +885,70 @@ $("dbSearch").oninput=renderDb;
 $("backupBtn").onclick=()=>{const b=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="menu-zaloha.json";a.click()};
 $("restoreBtn").onclick=()=>$("restoreFile").click();
 $("restoreFile").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{state=JSON.parse(await f.text());save();renderMenu();renderDb();renderPreview()}catch(err){alert("Chybná záloha.")}};
-$("printBtn").onclick=()=>{
+$("printBtn").onclick=async()=>{
+  const btn=$("printBtn");
+  const oldText=btn.textContent;
+  btn.textContent="Pripravujem A4…";
+  btn.disabled=true;
+
   const a4=$("a4");
   const oldTransform=a4.style.transform;
   const oldMargin=a4.style.marginBottom;
-  a4.style.transform="none";
-  a4.style.marginBottom="0";
+  const oldBoxShadow=a4.style.boxShadow;
+
   try{
-    window.print();
-  }catch(e){
-    alert("Otvor stránku v Safari a stlač Tlačiť A4 znova.");
-  }
-  setTimeout(()=>{
+    // Render the actual designed A4, not Safari's webpage print view.
+    a4.style.transform="none";
+    a4.style.marginBottom="0";
+    a4.style.boxShadow="none";
+
+    await new Promise(r=>setTimeout(r,120));
+
+    const canvas=await html2canvas(a4,{
+      scale:3,
+      backgroundColor:"#ffffff",
+      useCORS:true,
+      logging:false,
+      width:794,
+      height:1123,
+      windowWidth:794,
+      windowHeight:1123
+    });
+
+    const img=canvas.toDataURL("image/jpeg",0.98);
+    const {jsPDF}=window.jspdf;
+    const pdf=new jsPDF({
+      orientation:"portrait",
+      unit:"mm",
+      format:"a4",
+      compress:true
+    });
+
+    // Edge-to-edge A4 artwork. No browser URL/date/footer will be added.
+    pdf.addImage(img,"JPEG",0,0,210,297,undefined,"FAST");
+
+    const blob=pdf.output("blob");
+    const url=URL.createObjectURL(blob);
+
+    // Open the PDF itself. Printing the PDF avoids Safari webpage headers/footers.
+    const w=window.open(url,"_blank");
+    if(!w){
+      // Fallback if popups are blocked.
+      pdf.save("obedove-menu-U-Mastina.pdf");
+    }
+
+    setTimeout(()=>URL.revokeObjectURL(url),60000);
+  }catch(err){
+    console.error(err);
+    alert("PDF sa nepodarilo pripraviť. Skús stránku otvoriť priamo v Safari.");
+  }finally{
     a4.style.transform=oldTransform;
     a4.style.marginBottom=oldMargin;
+    a4.style.boxShadow=oldBoxShadow;
+    btn.textContent=oldText;
+    btn.disabled=false;
     fitPreview();
-  },800);
+  }
 };
 window.addEventListener("resize",fitPreview);
 
