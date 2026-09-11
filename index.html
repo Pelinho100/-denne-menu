@@ -108,7 +108,7 @@ input,select{
   grid-template-columns:1.05fr 1.5fr 1fr;
   align-items:end;
   gap:14px;
-  margin-bottom:10px
+  margin-bottom:12px
 }
 .brand-block{text-align:center}
 .brand-small{
@@ -148,7 +148,9 @@ input,select{
 .poster-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:8px
+  gap:8px;
+  min-height:248mm;
+  align-content:start
 }
 .poster-col{display:flex;flex-direction:column;gap:8px}
 .day-card{
@@ -309,9 +311,39 @@ input,select{
   .wrap{max-width:none;padding:0;margin:0}
   .preview-wrap{margin:0}
   .a4-stage{padding:0;background:#fff;overflow:visible}
+  html,body{
+    width:210mm !important;
+    height:297mm !important;
+    margin:0 !important;
+    padding:0 !important;
+    overflow:hidden !important;
+  }
+  .wrap,.preview-wrap,.a4-stage{
+    width:210mm !important;
+    height:297mm !important;
+    max-width:none !important;
+    margin:0 !important;
+    padding:0 !important;
+    overflow:hidden !important;
+    background:#fff !important;
+  }
   .a4{
-    width:210mm;height:297mm;margin:0;padding:6mm;
-    box-shadow:none;overflow:hidden
+    width:210mm !important;
+    height:297mm !important;
+    min-width:210mm !important;
+    min-height:297mm !important;
+    max-width:210mm !important;
+    max-height:297mm !important;
+    margin:0 !important;
+    padding:5mm 5.5mm 4.5mm !important;
+    box-shadow:none !important;
+    overflow:hidden !important;
+    transform:none !important;
+    transform-origin:initial !important;
+    page-break-before:avoid !important;
+    page-break-after:avoid !important;
+    break-before:avoid-page !important;
+    break-after:avoid-page !important;
   }
   .brand-small{font-size:8pt}
   .brand-name{font-size:20pt}
@@ -319,7 +351,27 @@ input,select{
   .menu-script{font-size:28pt}
   .menu-sub{font-size:6pt}
   .motto .script{font-size:16pt}
-  .day-card{padding:2.2mm 2.8mm 2mm;border-radius:3mm}
+  .poster-grid{
+    min-height:0 !important;
+    height:249mm !important;
+    gap:2mm !important;
+  }
+  .poster-col{
+    height:249mm !important;
+    justify-content:flex-start;
+    gap:2mm !important;
+  }
+  .day-card{
+    padding:2.2mm 2.8mm 2mm;
+    border-radius:3mm;
+    flex:1 1 0;
+  }
+  .poster-col:first-child .day-card{
+    min-height:0;
+  }
+  .poster-col:last-child .day-card{
+    flex:1 1 0;
+  }
   .day-card-head .day{font-size:15pt}
   .day-card-head .date{font-size:8pt}
   .section-title{font-size:7.8pt}
@@ -342,13 +394,21 @@ input,select{
     margin-bottom:1mm;
     padding-bottom:1mm;
   }
-  .info-card{min-height:48mm;padding:3mm}
+  .info-card{
+    min-height:0 !important;
+    flex:1 1 0;
+    padding:3mm;
+  }
   .info-message .script{font-size:16pt}
   .info-brand{font-size:12pt}
   .info-lines{font-size:6.2pt}
   .info-line{grid-template-columns:5mm 1fr;gap:1mm;margin:1.4mm 0}
   .info-bottom{font-size:5.2pt}
-  .poster-foot{font-size:5.2pt}
+  .poster-foot{
+    font-size:5.2pt;
+    margin-top:1.5mm !important;
+    padding-top:1mm !important;
+  }
 }
 </style>
 </head>
@@ -449,7 +509,7 @@ input,select{
 </div>
 
 <script>
-const STORE="dailyMenuV23";
+const STORE="dailyMenuV24";
 const DAYS=["Pondelok","Utorok","Streda","Štvrtok","Piatok"];
 const $=id=>document.getElementById(id);
 const uid=()=>Math.random().toString(36).slice(2)+Date.now().toString(36);
@@ -817,8 +877,21 @@ $("backupBtn").onclick=()=>{const b=new Blob([JSON.stringify(state,null,2)],{typ
 $("restoreBtn").onclick=()=>$("restoreFile").click();
 $("restoreFile").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{state=JSON.parse(await f.text());save();renderMenu();renderDb();renderPreview()}catch(err){alert("Chybná záloha.")}};
 $("printBtn").onclick=()=>{
-  try{window.print()}
-  catch(e){alert("Otvor stránku v Safari a stlač Tlačiť A4 znova.")}
+  const a4=$("a4");
+  const oldTransform=a4.style.transform;
+  const oldMargin=a4.style.marginBottom;
+  a4.style.transform="none";
+  a4.style.marginBottom="0";
+  try{
+    window.print();
+  }catch(e){
+    alert("Otvor stránku v Safari a stlač Tlačiť A4 znova.");
+  }
+  setTimeout(()=>{
+    a4.style.transform=oldTransform;
+    a4.style.marginBottom=oldMargin;
+    fitPreview();
+  },800);
 };
 window.addEventListener("resize",fitPreview);
 
