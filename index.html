@@ -5,98 +5,99 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Týždenné denné menu</title>
 <style>
-:root{--bg:#f2f2f2;--card:#fff;--text:#111;--muted:#666;--line:#d7d7d7;--soft:#ececec;--danger:#a40018}
+:root{--bg:#f3f3f3;--card:#fff;--line:#d8d8d8;--text:#111;--muted:#666;--soft:#ececec;--danger:#a40018}
 *{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+body{margin:0;background:var(--bg);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;color:var(--text)}
 button,input,select{font:inherit}
-button{border:0;border-radius:10px;padding:10px 13px;background:#111;color:#fff}
-button.secondary{background:#e9e9e9;color:#111}
-button.danger{background:#fff;color:var(--danger);border:1px solid #e5b8c0}
-button.small{padding:6px 9px;font-size:12px}
-header{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);padding:12px 14px}
-.header{max-width:1240px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
-.header h1{font-size:20px;margin:0}
-.toolbar{display:flex;gap:7px;flex-wrap:wrap}
-.wrap{max-width:1240px;margin:auto;padding:14px}
-.tabs{display:flex;gap:8px;margin-bottom:12px}
+button{border:0;border-radius:14px;padding:11px 14px;background:#111;color:#fff}
+button.gray{background:#e8e8e8;color:#111}
+button.red{background:#fff;color:var(--danger);border:1px solid #e8b9c1}
+button.small{padding:7px 10px;font-size:12px;border-radius:10px}
+header{position:sticky;top:0;z-index:30;background:#fff;border-bottom:1px solid var(--line);padding:12px}
+.head{max-width:1100px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.head h1{margin:0;font-size:20px}
+.toolbar,.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.wrap{max-width:1100px;margin:auto;padding:12px}
+.tabs{margin-bottom:12px}
 .tabs button{background:#e7e7e7;color:#111}
-.tabs .active{background:#111;color:#fff}
-.layout{display:grid;grid-template-columns:1.15fr .85fr;gap:14px}
-.panel,.preview{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px}
-.weeknav{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px}
-.weektitle{font-weight:700;margin:4px 0 12px}
-.daycard{border:1px solid #dedede;border-radius:12px;margin-bottom:12px;overflow:hidden}
-.dayhead{display:grid;grid-template-columns:1fr 150px auto;gap:8px;align-items:center;background:#f7f7f7;padding:10px}
-.dayname{font-weight:800;font-size:17px}
-.dayhead input{padding:7px 8px;border:1px solid #ccc;border-radius:8px;background:#fff;width:100%}
-.items{padding:8px}
-.item{border-bottom:1px solid #ececec;padding:8px 0}
-.item:last-child{border-bottom:0}
-.itemrow{display:grid;grid-template-columns:54px 1.7fr 84px 80px 92px auto;gap:6px;align-items:center}
-.itemrow input,.itemrow select,.subrow input,.dbform input,.dbform select,.search{width:100%;padding:8px;border:1px solid #ccc;border-radius:8px;background:#fff}
-.subrow{display:grid;grid-template-columns:92px 1fr auto;gap:6px;align-items:center;margin:6px 0 0 60px}
-.itemtools{display:flex;gap:5px}
-.itemnote{margin:6px 0 0 60px}
-.itemnote input{width:100%;padding:7px;border:1px solid #ccc;border-radius:8px}
-.addrow{padding:8px;border-top:1px solid #eee}
-.preview{padding:24px;min-height:800px}
-.preview h2{margin:0;text-align:left;font-family:Georgia,serif;font-size:26px}
-.preview .range{font-weight:700;margin-top:2px}
-.preview .restaurant{float:right;font-weight:800;margin-top:-32px}
-.pvday{margin-top:13px}
-.pvdayhead{display:flex;justify-content:space-between;gap:8px;font-weight:800;font-size:13px}
-.pvline{display:grid;grid-template-columns:28px 1fr 52px;gap:6px;font-size:10.5px;line-height:1.25;padding:1.5px 0}
-.pvline .price{text-align:right;white-space:nowrap}
-.pvsub{font-size:9px;margin-left:34px;color:#222}
-.pvfoot{border-top:1px solid #111;margin-top:12px;padding-top:6px;font-size:8px;line-height:1.25}
-.dbform{display:grid;grid-template-columns:2fr 1fr 90px 80px;gap:7px}
-.dbrow{display:grid;grid-template-columns:1fr auto;gap:8px;padding:9px 0;border-bottom:1px solid #eee}
-.dbmeta{font-size:12px;color:var(--muted);margin-top:2px}
+.tabs button.active{background:#111;color:#fff}
+.panel,.preview{background:#fff;border:1px solid var(--line);border-radius:18px;padding:14px}
+.settings{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
 label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
-.settings{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.settings input{width:100%;padding:8px;border:1px solid #ccc;border-radius:8px}
-@media(max-width:950px){
- .layout{grid-template-columns:1fr}
- .preview{min-height:auto}
- .itemrow{grid-template-columns:48px minmax(190px,1fr) 72px 68px 78px auto;overflow-x:auto}
- .dayhead{grid-template-columns:1fr 130px auto}
-}
-@media(max-width:650px){
- .wrap{padding:8px}
- .panel,.preview{padding:10px}
- .itemrow{grid-template-columns:46px 1fr;gap:5px}
- .itemrow .weight,.itemrow .price,.itemrow .allergens{grid-column:auto}
- .itemtools{grid-column:1/-1}
- .subrow{margin-left:0;grid-template-columns:86px 1fr auto}
- .itemnote{margin-left:0}
- .dayhead{grid-template-columns:1fr 122px}
- .dayhead .copy{grid-column:1/-1}
+input,select{width:100%;padding:10px;border:1px solid #ccc;border-radius:10px;background:#fff}
+.day{border:1px solid #ddd;border-radius:16px;overflow:hidden;margin-bottom:12px;background:#fff}
+.dayhead{display:grid;grid-template-columns:1fr 170px;gap:8px;align-items:center;background:#f7f7f7;padding:12px}
+.dayhead strong{font-size:18px}
+.rows{padding:8px}
+.item{border-bottom:1px solid #eee;padding:10px 0}
+.item:last-child{border-bottom:0}
+.top{display:grid;grid-template-columns:58px 130px 1fr 86px auto;gap:7px;align-items:center}
+.details{display:grid;grid-template-columns:1fr 120px;gap:7px;margin-top:7px;padding-left:195px}
+.side{display:grid;grid-template-columns:110px 1fr auto;gap:7px;margin-top:7px;padding-left:195px}
+.actions{display:flex;gap:6px}
+.addline{border-top:1px solid #eee;padding:10px}
+.helper{font-size:12px;color:var(--muted);margin:8px 0 0}
+.dbform{display:grid;grid-template-columns:1.7fr 1fr;gap:8px}
+.dbform2{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px}
+.dbrow{display:grid;grid-template-columns:1fr auto;gap:8px;padding:10px 0;border-bottom:1px solid #eee}
+.dbmeta{font-size:12px;color:var(--muted);margin-top:3px}
+.preview{margin-top:14px;padding:18px}
+.previewTitle{font-size:18px;font-weight:700;margin:0 0 12px}
+.printCard{border:1px solid var(--line);border-radius:18px;padding:20px;background:#fff}
+.printRestaurant{text-align:center;font-size:18px;font-weight:700;margin:0 0 6px}
+.printMain{font-family:Georgia,serif;font-size:28px;font-weight:700;text-align:left;margin:0}
+.printRange{font-size:18px;font-weight:700;margin:6px 0 14px}
+.pvday{margin-top:14px}
+.pvdayHead{display:grid;grid-template-columns:1fr 80px;gap:10px;align-items:end;margin-bottom:6px}
+.pvdayHead h3{font-size:17px;margin:0;font-weight:800}
+.pvdayHead div{text-align:right;font-size:17px;font-weight:800}
+.pvline{display:grid;grid-template-columns:30px 1fr 80px;gap:8px;font-size:15px;padding:3px 0;align-items:start}
+.pvcode{font-weight:700}
+.pvprice{text-align:right;white-space:nowrap}
+.pvside{font-size:13px;margin:0 0 3px 38px}
+.printFooter{border-top:2px solid #222;margin-top:16px;padding-top:8px;font-size:12px;color:#333}
+.hidden{display:none!important}
+@media(max-width:760px){
  .settings{grid-template-columns:1fr}
+ .dayhead{grid-template-columns:1fr 145px}
+ .top{grid-template-columns:55px 1fr}
+ .top > :nth-child(3){grid-column:1 / -1}
+ .top > :nth-child(4){grid-column:1 / span 1}
+ .top > :nth-child(5){grid-column:2 / span 1;justify-self:end}
+ .details,.side{padding-left:0}
+ .details{grid-template-columns:1fr}
+ .side{grid-template-columns:1fr auto}
+ .side > :first-child{grid-column:1 / -1}
+ .dbform,.dbform2{grid-template-columns:1fr}
+ .pvline{grid-template-columns:28px 1fr 66px;font-size:14px}
+ .printMain{font-size:24px}
+ .printRange{font-size:16px}
 }
 @media print{
- @page{size:A4;margin:8mm}
+ @page{size:A4;margin:9mm}
  body{background:#fff}
- header,.editor{display:none!important}
+ header,.editor,.previewTitle{display:none!important}
  .wrap{padding:0;max-width:none}
- .layout{display:block}
- .preview{border:0;border-radius:0;padding:0;min-height:auto}
- .preview h2{font-size:16pt}
- .pvday{margin-top:7px}
- .pvdayhead{font-size:8.5pt}
- .pvline{font-size:7.4pt;grid-template-columns:19px 1fr 38px}
- .pvsub{font-size:6.7pt;margin-left:24px}
- .pvfoot{font-size:6pt}
+ .preview{margin:0;border:0;padding:0}
+ .printCard{border:0;padding:0}
+ .printRestaurant{font-size:12pt}
+ .printMain{font-size:21pt}
+ .printRange{font-size:15pt;margin:3pt 0 10pt}
+ .pvday{margin-top:9pt}
+ .pvdayHead h3,.pvdayHead div{font-size:11pt}
+ .pvline{font-size:9pt}
+ .pvside{font-size:7.6pt}
 }
 </style>
 </head>
 <body>
 <header>
- <div class="header">
+ <div class="head">
   <h1>Týždenné denné menu</h1>
   <div class="toolbar">
    <button id="printBtn">Tlačiť A4</button>
-   <button class="secondary" id="backupBtn">Záloha</button>
-   <button class="secondary" id="restoreBtn">Obnoviť</button>
+   <button class="gray" id="backupBtn">Záloha</button>
+   <button class="gray" id="restoreBtn">Obnoviť</button>
    <input id="restoreFile" type="file" accept="application/json" hidden>
   </div>
  </div>
@@ -104,227 +105,311 @@ label{display:block;font-size:12px;color:var(--muted);margin-bottom:4px}
 
 <div class="wrap">
  <div class="tabs editor">
-  <button id="tabWeek" class="active">Týždeň</button>
+  <button id="tabMenu" class="active">Menu</button>
   <button id="tabDb">Databáza jedál</button>
  </div>
 
- <div class="layout">
-  <div class="panel editor">
-   <section id="weekPanel">
-    <div class="settings">
-      <div><label>Názov prevádzky</label><input id="restaurantName" placeholder="Napr. TOBB restaurant"></div>
-      <div><label>Nadpis</label><input id="menuTitle" value="DENNÉ MENU"></div>
-    </div>
-    <div class="weeknav">
-      <button class="secondary" id="prevWeek">← Predchádzajúci týždeň</button>
-      <button class="secondary" id="todayWeek">Tento týždeň</button>
-      <button class="secondary" id="nextWeek">Ďalší týždeň →</button>
-    </div>
-    <div class="weektitle" id="weekTitle"></div>
-    <div id="days"></div>
-   </section>
-
-   <section id="dbPanel" hidden>
-    <h2 style="margin-top:0">Databáza jedál</h2>
-    <div class="dbform">
-      <input id="dishName" placeholder="Názov jedla">
-      <select id="dishCategory">
-        <option>Polievka</option>
-        <option>Hlavné jedlo</option>
-        <option>Fit</option>
-        <option>Business</option>
-        <option>Iné</option>
-      </select>
-      <input id="dishWeight" placeholder="150 g">
-      <input id="dishPrice" placeholder="7,50">
-    </div>
-    <div class="settings" style="margin-top:8px">
-      <input id="dishAllergens" placeholder="Alergény 1,3,7">
-      <input id="dishDefaultSub" placeholder="Predvolená príloha, napr. ryža">
-    </div>
-    <input id="dishId" type="hidden">
-    <div class="toolbar" style="margin:8px 0 12px">
-      <button id="saveDish">Pridať jedlo</button>
-      <button id="clearDish" class="secondary">Vyčistiť</button>
-    </div>
-    <input id="searchDish" class="search" placeholder="Hľadať v databáze...">
-    <div id="dishList"></div>
-   </section>
+ <div class="panel editor" id="menuPanel">
+  <div class="settings">
+   <div>
+    <label>Názov reštaurácie</label>
+    <input id="restaurantName" value="Reštaurácia U Mastina">
+   </div>
+   <div>
+    <label>Nadpis</label>
+    <input id="menuTitle" value="DENNÉ MENU">
+   </div>
   </div>
+  <div class="helper">Položky sa zobrazujú a tlačia číslované 1., 2., 3., 4., 5. Pri jedle môžeš meniť názov, cenu, alergény aj prílohu.</div>
+  <div id="days"></div>
+ </div>
 
-  <div class="preview">
-    <h2 id="pvTitle">DENNÉ MENU:</h2>
-    <div id="pvRange" class="range"></div>
-    <div id="pvRestaurant" class="restaurant"></div>
-    <div id="pvDays"></div>
-    <div class="pvfoot">
-      Alergény sú uvedené v zátvorke. Menu je pripravené na čiernobielu tlač A4.
-    </div>
+ <div class="panel editor hidden" id="dbPanel">
+  <h2 style="margin:0 0 10px">Databáza jedál</h2>
+  <div class="dbform">
+   <input id="dbName" placeholder="Názov jedla alebo prílohy">
+   <select id="dbCategory">
+    <option>Hlavné jedlo</option>
+    <option>Polievka</option>
+    <option>Príloha</option>
+   </select>
+  </div>
+  <div class="dbform2">
+   <input id="dbWeight" placeholder="Gramáž napr. 150 g / 0,33 l">
+   <input id="dbPrice" placeholder="Cena napr. 8,50">
+   <input id="dbAllergens" placeholder="Alergény napr. 1,3,7">
+  </div>
+  <input id="dbId" type="hidden">
+  <div class="toolbar" style="margin:10px 0">
+   <button id="saveDb">Pridať do databázy</button>
+   <button class="gray" id="clearDb">Vyčistiť</button>
+  </div>
+  <input id="dbSearch" placeholder="Vyhľadať v databáze...">
+  <div id="dbList"></div>
+ </div>
+
+ <div class="preview">
+  <div class="previewTitle">Náhľad hotového jedálneho lístka</div>
+  <div class="printCard">
+   <div id="pvRestaurant" class="printRestaurant"></div>
+   <h2 id="pvTitle" class="printMain">DENNÉ MENU</h2>
+   <div id="pvRange" class="printRange"></div>
+   <div id="pvDays"></div>
+   <div class="printFooter">Alergény sú uvedené v zátvorke. Zmeny v ponuke vyhradené. Menu je pripravené na čiernobielu tlač A4.</div>
   </div>
  </div>
 </div>
 
+<datalist id="dishList"></datalist>
+<datalist id="sideList"></datalist>
+
 <script>
-function uid(){ return 'id_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,8); }
 const $=id=>document.getElementById(id);
-const names=["Pondelok","Utorok","Streda","Štvrtok","Piatok"];
-const seed=[
- {id:uid(),name:"Slepačí vývar s rezancami",category:"Polievka",weight:"0,33 l",price:"",allergens:"1,3,9",defaultSub:""},
- {id:uid(),name:"Cesnaková polievka",category:"Polievka",weight:"0,33 l",price:"",allergens:"1,7",defaultSub:""},
- {id:uid(),name:"Kurací rezeň, zemiaková kaša, šalát",category:"Hlavné jedlo",weight:"150 g",price:"7,50",allergens:"1,3,7",defaultSub:"zemiaková kaša, šalát"},
- {id:uid(),name:"Hovädzí guláš, domáca knedľa",category:"Hlavné jedlo",weight:"150 g",price:"8,50",allergens:"1,3,7",defaultSub:"domáca knedľa"}
+const STORE="dailyMenuV10";
+const DAYS=["Pondelok","Utorok","Streda","Štvrtok","Piatok"];
+function uid(){return "id_"+Date.now().toString(36)+"_"+Math.random().toString(36).slice(2,8)}
+function monday(){const d=new Date();d.setHours(12,0,0,0);const n=d.getDay()||7;d.setDate(d.getDate()-n+1);return d}
+function iso(d){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,"0"),dd=String(d.getDate()).padStart(2,"0");return `${y}-${m}-${dd}`}
+function parseISO(s){const [y,m,d]=s.split("-").map(Number);return new Date(y,m-1,d,12)}
+function fmt(s){return parseISO(s).toLocaleDateString("sk-SK",{day:"2-digit",month:"2-digit",year:"numeric"})}
+function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
+function money(v){if(!v)return "";return String(v).includes("€")?String(v):`${v} €`}
+
+const seedDb=[
+ {id:uid(),category:"Hlavné jedlo",name:"Hovädzí guláš",weight:"150 g",price:"8,50",allergens:"1,3,7"},
+ {id:uid(),category:"Hlavné jedlo",name:"Kurací rezeň",weight:"150 g",price:"7,50",allergens:"1,3,7"},
+ {id:uid(),category:"Hlavné jedlo",name:"Vyprážaný syr",weight:"120 g",price:"7,50",allergens:"1,3,7"},
+ {id:uid(),category:"Hlavné jedlo",name:"Bravčový steak",weight:"150 g",price:"8,20",allergens:"7"},
+ {id:uid(),category:"Hlavné jedlo",name:"Kuracie soté na zelenine",weight:"150 g",price:"7,90",allergens:"1"},
+ {id:uid(),category:"Hlavné jedlo",name:"Pečené kuracie stehno",weight:"200 g",price:"7,90",allergens:""},
+ {id:uid(),category:"Hlavné jedlo",name:"Bravčové výpečky",weight:"150 g",price:"8,20",allergens:"1"},
+ {id:uid(),category:"Hlavné jedlo",name:"Grilovaný losos",weight:"150 g",price:"9,80",allergens:"4"},
+ {id:uid(),category:"Hlavné jedlo",name:"Kurací perkelt",weight:"150 g",price:"8,10",allergens:"1,7"},
+ {id:uid(),category:"Hlavné jedlo",name:"Segedínsky guláš",weight:"150 g",price:"8,30",allergens:"1,7"},
+ {id:uid(),category:"Polievka",name:"Slepačí vývar s rezancami",weight:"0,33 l",price:"2,20",allergens:"1,3,9"},
+ {id:uid(),category:"Polievka",name:"Cesnaková polievka so syrom",weight:"0,33 l",price:"2,50",allergens:"1,7"},
+ {id:uid(),category:"Príloha",name:"Domáca knedľa",weight:"160 g",price:"",allergens:"1,3,7"},
+ {id:uid(),category:"Príloha",name:"Zemiaková kaša",weight:"200 g",price:"",allergens:"7"},
+ {id:uid(),category:"Príloha",name:"Miešaný šalát",weight:"120 g",price:"",allergens:""},
+ {id:uid(),category:"Príloha",name:"Ryža",weight:"150 g",price:"",allergens:""},
+ {id:uid(),category:"Príloha",name:"Hranolky",weight:"150 g",price:"",allergens:""},
+ {id:uid(),category:"Príloha",name:"Varené zemiaky",weight:"200 g",price:"",allergens:""},
+ {id:uid(),category:"Príloha",name:"Dusená ryža",weight:"150 g",price:"",allergens:""},
+ {id:uid(),category:"Príloha",name:"Kapustový šalát",weight:"120 g",price:"",allergens:""}
 ];
 
-let data;
-try{ data=JSON.parse(localStorage.getItem("dailyMenuV4")||"null"); }catch(e){ data=null; }
-if(!data) data={dishes:seed,weeks:{},settings:{restaurantName:"",title:"DENNÉ MENU"}};
+const menuSeed=[
+ [
+  {name:"Hovädzí guláš",side:"Domáca knedľa"},
+  {name:"Kurací rezeň",side:"Zemiaková kaša, Miešaný šalát"},
+  {name:"Vyprážaný syr",side:"Hranolky, Tatárska omáčka"},
+  {name:"Bravčový steak",side:"Ryža"},
+  {name:"Kuracie soté na zelenine",side:"Dusená ryža"}
+ ],
+ [
+  {name:"Pečené kuracie stehno",side:"Ryža, Kapustový šalát"},
+  {name:"Bravčové výpečky",side:"Varené zemiaky"},
+  {name:"Grilovaný losos",side:"Varené zemiaky"},
+  {name:"Kurací perkelt",side:"Domáca knedľa"},
+  {name:"Segedínsky guláš",side:"Domáca knedľa"}
+ ],
+ [
+  {name:"Kurací rezeň",side:"Hranolky, Miešaný šalát"},
+  {name:"Hovädzí guláš",side:"Domáca knedľa"},
+  {name:"Vyprážaný syr",side:"Zemiaková kaša"},
+  {name:"Kuracie soté na zelenine",side:"Ryža"},
+  {name:"Bravčový steak",side:"Varené zemiaky"}
+ ],
+ [
+  {name:"Pečené kuracie stehno",side:"Dusená ryža"},
+  {name:"Segedínsky guláš",side:"Domáca knedľa"},
+  {name:"Grilovaný losos",side:"Miešaný šalát"},
+  {name:"Kurací perkelt",side:"Domáca knedľa"},
+  {name:"Bravčové výpečky",side:"Varené zemiaky"}
+ ],
+ [
+  {name:"Hovädzí guláš",side:"Domáca knedľa"},
+  {name:"Kurací rezeň",side:"Zemiaková kaša, Kapustový šalát"},
+  {name:"Bravčový steak",side:"Ryža"},
+  {name:"Vyprážaný syr",side:"Hranolky"},
+  {name:"Kuracie soté na zelenine",side:"Dusená ryža"}
+ ]
+];
 
-function save(){try{localStorage.setItem("dailyMenuV4",JSON.stringify(data))}catch(e){}}
-function iso(d){const y=d.getFullYear(),m=String(d.getMonth()+1).padStart(2,'0'),day=String(d.getDate()).padStart(2,'0');return `${y}-${m}-${day}`}
-function parseISO(s){const [y,m,d]=s.split('-').map(Number);return new Date(y,m-1,d,12)}
-function mondayOfDate(d){const x=new Date(d);const day=x.getDay()||7;x.setDate(x.getDate()-day+1);return x}
-function formatShort(d){return d.toLocaleDateString("sk-SK",{day:"2-digit",month:"2-digit",year:"numeric"})}
-function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function newItem(code){return{id:uid(),code:code||"",sourceId:"",name:"",weight:"",price:"",allergens:"",subs:[]}}
-function weekKey(monday){return iso(monday)}
-function getWeek(monday){
- const key=weekKey(monday);
- if(!data.weeks[key]){
-   data.weeks[key]={days:[]};
-   for(let i=0;i<5;i++){
-     const d=new Date(monday);d.setDate(monday.getDate()+i);
-     data.weeks[key].days.push({date:iso(d),items:[]});
-   }
- }
- return data.weeks[key];
+function dbByName(name){return state.db.find(x=>x.name.toLowerCase()===name.trim().toLowerCase())}
+function makeItem(code,name,side){
+ const d=dbByName(name)||{name,category:"Hlavné jedlo",weight:"",price:"",allergens:""};
+ return {id:uid(),code,category:d.category,sourceName:d.name,name:d.name,weight:d.weight,price:d.price,allergens:d.allergens,side:side||"",extras:[]};
 }
-let currentMonday=mondayOfDate(new Date());
-
-function options(selected){
- return `<option value="">-- vyber jedlo z databázy --</option>`+
- data.dishes.slice().sort((a,b)=>a.name.localeCompare(b.name,"sk")).map(d=>`<option value="${d.id}" ${selected===d.id?'selected':''}>${esc(d.name)}</option>`).join('');
-}
-
-function renderWeek(){
- const week=getWeek(currentMonday), end=new Date(currentMonday);end.setDate(end.getDate()+4);
- $("weekTitle").textContent=`${formatShort(currentMonday)} – ${formatShort(end)}`;
- $("restaurantName").value=data.settings.restaurantName||"";
- $("menuTitle").value=data.settings.title||"DENNÉ MENU";
- const host=$("days");host.innerHTML="";
- week.days.forEach((day,di)=>{
-   const card=document.createElement("div");card.className="daycard";
-   const head=document.createElement("div");head.className="dayhead";
-   const title=document.createElement("div");title.className="dayname";title.textContent=names[di];
-   const date=document.createElement("input");date.type="date";date.value=day.date;
-   date.onchange=()=>{day.date=date.value;save();renderPreview()}
-   const copy=document.createElement("button");copy.className="secondary small copy";copy.textContent="Kopírovať z predošlého dňa";
-   copy.onclick=()=>{if(di===0)return alert("Pondelok nemá predchádzajúci deň v tomto týždni.");day.items=JSON.parse(JSON.stringify(week.days[di-1].items));day.items.forEach(x=>x.id=uid());save();renderWeek();renderPreview()}
-   head.append(title,date,copy);card.appendChild(head);
-
-   const items=document.createElement("div");items.className="items";
-   day.items.forEach((it,ii)=>{
-      const box=document.createElement("div");box.className="item";
-      const row=document.createElement("div");row.className="itemrow";
-      const code=document.createElement("input");code.value=it.code||"";code.placeholder="1.";
-      const sel=document.createElement("select");sel.innerHTML=options(it.sourceId);
-      const weight=document.createElement("input");weight.className="weight";weight.value=it.weight||"";weight.placeholder="g";
-      const price=document.createElement("input");price.className="price";price.value=it.price||"";price.placeholder="€";
-      const allergens=document.createElement("input");allergens.className="allergens";allergens.value=it.allergens||"";allergens.placeholder="alerg.";
-      const tools=document.createElement("div");tools.className="itemtools";
-      const sub=document.createElement("button");sub.className="secondary small";sub.textContent="+ príloha";
-      const del=document.createElement("button");del.className="danger small";del.textContent="×";
-      tools.append(sub,del);
-      row.append(code,sel,weight,price,allergens,tools);box.appendChild(row);
-
-      const note=document.createElement("div");note.className="itemnote";
-      const name=document.createElement("input");name.value=it.name||"";name.placeholder="Názov jedla – môžeš ľubovoľne prepísať";
-      note.appendChild(name);box.appendChild(note);
-
-      sel.onchange=()=>{
-        const d=data.dishes.find(x=>x.id===sel.value);
-        if(d){
-          it.sourceId=d.id;it.name=d.name;it.weight=d.weight;it.price=d.price;it.allergens=d.allergens;
-          if(d.defaultSub && !it.subs.length)it.subs.push({id:uid(),label:"Príloha",text:d.defaultSub});
-          save();renderWeek();renderPreview();
-        }
-      };
-      [[code,'code'],[weight,'weight'],[price,'price'],[allergens,'allergens'],[name,'name']].forEach(([el,key])=>el.oninput=()=>{it[key]=el.value;save();renderPreview()});
-      sub.onclick=()=>{it.subs.push({id:uid(),label:"Príloha",text:""});save();renderWeek();renderPreview()};
-      del.onclick=()=>{day.items.splice(ii,1);save();renderWeek();renderPreview()};
-
-      it.subs.forEach((s,si)=>{
-        const sr=document.createElement("div");sr.className="subrow";
-        const lab=document.createElement("input");lab.value=s.label||"";lab.placeholder="Príloha";
-        const txt=document.createElement("input");txt.value=s.text||"";txt.placeholder="napr. ryža / hranolky / šalát";
-        const dx=document.createElement("button");dx.className="danger small";dx.textContent="×";
-        lab.oninput=()=>{s.label=lab.value;save();renderPreview()};txt.oninput=()=>{s.text=txt.value;save();renderPreview()};
-        dx.onclick=()=>{it.subs.splice(si,1);save();renderWeek();renderPreview()};
-        sr.append(lab,txt,dx);box.appendChild(sr);
-      });
-      items.appendChild(box);
-   });
-   card.appendChild(items);
-   const add=document.createElement("div");add.className="addrow";
-   const b=document.createElement("button");b.className="secondary";b.textContent="+ Pridať položku";
-   b.onclick=()=>{const code=day.items.length<2?(day.items.length===0?"A.":"B."):(day.items.length-1)+'.';day.items.push(newItem(code));save();renderWeek();renderPreview()};
-   add.appendChild(b);card.appendChild(add);
-   host.appendChild(card);
+function makeInitialDays(){
+ const mon=monday();
+ return DAYS.map((day,i)=>{
+   const d=new Date(mon);d.setDate(mon.getDate()+i);
+   return {day,date:iso(d),items:menuSeed[i].map((m,j)=>makeItem(`${j+1}.`,m.name,m.side))};
  });
+}
+let state;
+try{state=JSON.parse(localStorage.getItem(STORE)||"null")}catch(e){state=null}
+if(!state)state={restaurant:"Reštaurácia U Mastina",title:"DENNÉ MENU",db:seedDb,days:makeInitialDays()};
+function save(){localStorage.setItem(STORE,JSON.stringify(state))}
+
+function refreshDatalists(){
+ const dl=$("dishList");dl.innerHTML="";
+ state.db.filter(x=>x.category!=="Príloha").sort((a,b)=>a.name.localeCompare(b.name,"sk")).forEach(d=>{
+  const o=document.createElement("option");o.value=d.name;o.label=`${d.category} • ${d.weight||""} • ${d.price||""}`;dl.appendChild(o);
+ });
+ const sl=$("sideList");sl.innerHTML="";
+ state.db.filter(x=>x.category==="Príloha").sort((a,b)=>a.name.localeCompare(b.name,"sk")).forEach(d=>{
+  const o=document.createElement("option");o.value=d.name;o.label=d.weight||"";sl.appendChild(o);
+ });
+}
+
+function normalizeCodes(day){
+ day.items.forEach((it,i)=>it.code=`${i+1}.`);
+}
+
+function applyDish(item,name){
+ const d=state.db.find(x=>x.name.toLowerCase()===name.trim().toLowerCase() && x.category!=="Príloha");
+ if(!d)return false;
+ item.sourceName=d.name;item.name=d.name;item.category=d.category;item.weight=d.weight;item.price=d.price;item.allergens=d.allergens;
+ return true;
+}
+
+function renderMenu(){
+ refreshDatalists();
+ $("restaurantName").value=state.restaurant;$("menuTitle").value=state.title;
+ const host=$("days");host.innerHTML="";
+ state.days.forEach((day,di)=>{
+  normalizeCodes(day);
+  const card=document.createElement("div");card.className="day";
+  const head=document.createElement("div");head.className="dayhead";
+  const title=document.createElement("strong");title.textContent=day.day;
+  const date=document.createElement("input");date.type="date";date.value=day.date;
+  date.onchange=()=>{day.date=date.value;save();renderPreview()};
+  head.append(title,date);card.appendChild(head);
+
+  const rows=document.createElement("div");rows.className="rows";
+  day.items.forEach((it,ii)=>{
+   const box=document.createElement("div");box.className="item";
+   const top=document.createElement("div");top.className="top";
+   const code=document.createElement("input");code.value=it.code||`${ii+1}.`;code.placeholder="1.";
+   const cat=document.createElement("select");
+   ["Hlavné jedlo","Polievka"].forEach(c=>{const o=document.createElement("option");o.value=c;o.textContent=c;if(it.category===c)o.selected=true;cat.appendChild(o)});
+   const dish=document.createElement("input");dish.setAttribute("list","dishList");dish.value=it.sourceName||it.name||"";dish.placeholder="Vyhľadať alebo vybrať jedlo";
+   const price=document.createElement("input");price.value=it.price||"";price.placeholder="Cena";
+   const actions=document.createElement("div");actions.className="actions";
+   const plus=document.createElement("button");plus.className="gray small";plus.textContent="+ príloha";
+   const del=document.createElement("button");del.className="red small";del.textContent="×";
+   actions.append(plus,del);top.append(code,cat,dish,price,actions);box.appendChild(top);
+
+   const details=document.createElement("div");details.className="details";
+   const name=document.createElement("input");name.value=it.name||"";name.placeholder="Názov jedla";
+   const weight=document.createElement("input");weight.value=it.weight||"";weight.placeholder="Gramáž";
+   details.append(name,weight);box.appendChild(details);
+
+   const sub=document.createElement("div");sub.className="details";
+   const allergens=document.createElement("input");allergens.value=it.allergens||"";allergens.placeholder="Alergény";
+   const side=document.createElement("input");side.setAttribute("list","sideList");side.value=it.side||"";side.placeholder="Príloha";
+   sub.append(allergens,side);box.appendChild(sub);
+
+   dish.onchange=()=>{if(applyDish(it,dish.value)){save();renderMenu();renderPreview()}};
+   [[code,"code"],[cat,"category"],[price,"price"],[name,"name"],[weight,"weight"],[allergens,"allergens"],[side,"side"]].forEach(([el,key])=>{
+    el.oninput=()=>{it[key]=el.value;save();renderPreview()};
+    el.onchange=()=>{it[key]=el.value;save();renderPreview()};
+   });
+   plus.onclick=()=>{it.extras=it.extras||[];it.extras.push({label:"Príloha",text:""});save();renderMenu();renderPreview()};
+   del.onclick=()=>{day.items.splice(ii,1);normalizeCodes(day);save();renderMenu();renderPreview()};
+
+   (it.extras||[]).forEach((ex,ei)=>{
+    const r=document.createElement("div");r.className="side";
+    const lab=document.createElement("input");lab.value=ex.label||"Príloha";
+    const txt=document.createElement("input");txt.setAttribute("list","sideList");txt.value=ex.text||"";txt.placeholder="Ďalšia príloha";
+    const dx=document.createElement("button");dx.className="red small";dx.textContent="×";
+    lab.oninput=()=>{ex.label=lab.value;save();renderPreview()};
+    txt.oninput=()=>{ex.text=txt.value;save();renderPreview()};
+    dx.onclick=()=>{it.extras.splice(ei,1);save();renderMenu();renderPreview()};
+    r.append(lab,txt,dx);box.appendChild(r);
+   });
+
+   rows.appendChild(box);
+  });
+  card.appendChild(rows);
+
+  const add=document.createElement("div");add.className="addline";
+  const btn=document.createElement("button");btn.className="gray";btn.textContent="+ Pridať položku";
+  btn.onclick=()=>{day.items.push({id:uid(),code:`${day.items.length+1}.`,category:"Hlavné jedlo",sourceName:"",name:"",weight:"150 g",price:"7,50",allergens:"",side:"",extras:[]});save();renderMenu();renderPreview()};
+  const copy=document.createElement("button");copy.className="gray";copy.textContent="Kopírovať z predošlého dňa";
+  copy.style.marginLeft="8px";
+  copy.onclick=()=>{if(di===0)return;day.items=JSON.parse(JSON.stringify(state.days[di-1].items)).map((x,idx)=>({...x,id:uid(),code:`${idx+1}.`}));save();renderMenu();renderPreview()};
+  add.append(btn,copy);card.appendChild(add);
+  host.appendChild(card);
+ });
+ save();
+}
+
+function dateRangeText(){
+ const first=state.days[0]?.date,last=state.days[state.days.length-1]?.date;
+ if(!first||!last)return "";
+ return `${fmt(first)} - ${fmt(last)}`;
 }
 
 function renderPreview(){
- const week=getWeek(currentMonday), end=new Date(currentMonday);end.setDate(end.getDate()+4);
- $("pvTitle").textContent=(data.settings.title||"DENNÉ MENU")+":";
- $("pvRange").textContent=`${formatShort(currentMonday)} - ${formatShort(end)}`;
- $("pvRestaurant").textContent=data.settings.restaurantName||"";
+ $("pvTitle").textContent=state.title;
+ $("pvRestaurant").textContent=state.restaurant;
+ $("pvRange").textContent=dateRangeText();
  const host=$("pvDays");host.innerHTML="";
- week.days.forEach((day,di)=>{
-   const sec=document.createElement("div");sec.className="pvday";
-   const d=parseISO(day.date);
-   sec.innerHTML=`<div class="pvdayhead"><span>${names[di]} ${formatShort(d)}</span><span>Cena</span></div>`;
-   day.items.forEach(it=>{
-     const p=it.price?(it.price.includes("€")?it.price:it.price+" €"):"";
-     const r=document.createElement("div");r.className="pvline";
-     r.innerHTML=`<div>${esc(it.code)}</div><div>${esc(it.name)}${it.allergens?` <span>(${esc(it.allergens)})</span>`:""}</div><div class="price">${esc(p)}</div>`;
-     sec.appendChild(r);
-     it.subs.forEach(s=>{
-       if(!s.text && !s.label)return;
-       const x=document.createElement("div");x.className="pvsub";x.innerHTML=`<b>${esc(s.label)}:</b> ${esc(s.text)}`;sec.appendChild(x)
-     })
-   });
-   host.appendChild(sec);
+ state.days.forEach(day=>{
+  normalizeCodes(day);
+  const sec=document.createElement("div");sec.className="pvday";
+  sec.innerHTML=`<div class="pvdayHead"><h3>${esc(day.day)} ${esc(fmt(day.date))}</h3><div>Cena</div></div>`;
+  day.items.forEach((it,ii)=>{
+   if(!it.name)return;
+   const line=document.createElement("div");line.className="pvline";
+   line.innerHTML=`<div class="pvcode">${esc(it.code||`${ii+1}.`)}</div><div>${it.category==="Polievka"?`<b>Polievka:</b> `:""}${esc(it.name)}${it.side?`, ${esc(it.side)}`:""}${it.allergens?` (${esc(it.allergens)})`:""}</div><div class="pvprice">${esc(money(it.price))}</div>`;
+   sec.appendChild(line);
+   (it.extras||[]).forEach(ex=>{if(ex.text){const x=document.createElement("div");x.className="pvside";x.innerHTML=`<b>${esc(ex.label)}:</b> ${esc(ex.text)}`;sec.appendChild(x)}});
+  });
+  host.appendChild(sec);
  });
 }
 
-function renderDishes(){
- const q=$("searchDish").value.toLowerCase(),host=$("dishList");host.innerHTML="";
- data.dishes.filter(d=>d.name.toLowerCase().includes(q)).sort((a,b)=>a.name.localeCompare(b.name,"sk")).forEach(d=>{
-   const r=document.createElement("div");r.className="dbrow";
-   r.innerHTML=`<div><b>${esc(d.name)}</b><div class="dbmeta">${esc(d.category)} • ${esc(d.weight||"")} • ${esc(d.price||"")} € • alergény ${esc(d.allergens||"-")}${d.defaultSub?` • príloha: ${esc(d.defaultSub)}`:""}</div></div>`;
-   const t=document.createElement("div");t.className="toolbar";
-   const e=document.createElement("button");e.className="secondary small";e.textContent="Upraviť";
-   const x=document.createElement("button");x.className="danger small";x.textContent="Zmazať";
-   e.onclick=()=>loadDish(d.id);x.onclick=()=>{if(confirm("Zmazať jedlo z databázy?")){data.dishes=data.dishes.filter(z=>z.id!==d.id);save();renderDishes();renderWeek()}};
-   t.append(e,x);r.appendChild(t);host.appendChild(r);
+function renderDb(){
+ const q=$("dbSearch").value.toLowerCase(),host=$("dbList");host.innerHTML="";
+ state.db.filter(d=>d.name.toLowerCase().includes(q)||d.category.toLowerCase().includes(q)).sort((a,b)=>a.category.localeCompare(b.category,"sk")||a.name.localeCompare(b.name,"sk")).forEach(d=>{
+  const r=document.createElement("div");r.className="dbrow";
+  r.innerHTML=`<div><b>${esc(d.name)}</b><div class="dbmeta">${esc(d.category)} • ${esc(d.weight||"")} • ${esc(d.price||"")}${d.price?" €":""} • alergény ${esc(d.allergens||"-")}</div></div>`;
+  const t=document.createElement("div");t.className="toolbar";
+  const e=document.createElement("button");e.className="gray small";e.textContent="Upraviť";
+  const x=document.createElement("button");x.className="red small";x.textContent="Zmazať";
+  e.onclick=()=>{$("dbId").value=d.id;$("dbName").value=d.name;$("dbCategory").value=d.category;$("dbWeight").value=d.weight||"";$("dbPrice").value=d.price||"";$("dbAllergens").value=d.allergens||"";$("saveDb").textContent="Uložiť zmeny"};
+  x.onclick=()=>{if(confirm("Zmazať položku z databázy?")){state.db=state.db.filter(z=>z.id!==d.id);save();renderDb();renderMenu();renderPreview()}};
+  t.append(e,x);r.appendChild(t);host.appendChild(r);
  });
 }
-function loadDish(id){const d=data.dishes.find(x=>x.id===id);$("dishId").value=d.id;$("dishName").value=d.name;$("dishCategory").value=d.category;$("dishWeight").value=d.weight||"";$("dishPrice").value=d.price||"";$("dishAllergens").value=d.allergens||"";$("dishDefaultSub").value=d.defaultSub||"";$("saveDish").textContent="Uložiť zmeny"}
-function clearDish(){["dishId","dishName","dishWeight","dishPrice","dishAllergens","dishDefaultSub"].forEach(id=>$(id).value="");$("dishCategory").value="Polievka";$("saveDish").textContent="Pridať jedlo"}
 
-$("restaurantName").oninput=()=>{data.settings.restaurantName=$("restaurantName").value;save();renderPreview()}
-$("menuTitle").oninput=()=>{data.settings.title=$("menuTitle").value;save();renderPreview()}
-$("prevWeek").onclick=()=>{currentMonday.setDate(currentMonday.getDate()-7);renderWeek();renderPreview()}
-$("nextWeek").onclick=()=>{currentMonday.setDate(currentMonday.getDate()+7);renderWeek();renderPreview()}
-$("todayWeek").onclick=()=>{currentMonday=mondayOfDate(new Date());renderWeek();renderPreview()}
-$("tabWeek").onclick=()=>{$("weekPanel").hidden=false;$("dbPanel").hidden=true;$("tabWeek").classList.add("active");$("tabDb").classList.remove("active")}
-$("tabDb").onclick=()=>{$("weekPanel").hidden=true;$("dbPanel").hidden=false;$("tabDb").classList.add("active");$("tabWeek").classList.remove("active")}
-$("saveDish").onclick=()=>{const name=$("dishName").value.trim();if(!name)return alert("Zadaj názov jedla.");const id=$("dishId").value;const d={id:id||uid(),name,category:$("dishCategory").value,weight:$("dishWeight").value.trim(),price:$("dishPrice").value.trim(),allergens:$("dishAllergens").value.trim(),defaultSub:$("dishDefaultSub").value.trim()};if(id)data.dishes=data.dishes.map(x=>x.id===id?d:x);else data.dishes.push(d);save();clearDish();renderDishes();renderWeek()}
-$("clearDish").onclick=clearDish;$("searchDish").oninput=renderDishes;$("printBtn").onclick=()=>window.print()
-$("backupBtn").onclick=()=>{const b=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="denne-menu-zaloha.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}
-$("restoreBtn").onclick=()=>$("restoreFile").click()
-$("restoreFile").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{data=JSON.parse(await f.text());save();renderDishes();renderWeek();renderPreview();alert("Záloha obnovená.")}catch(err){alert("Zálohu sa nepodarilo načítať.")}}
+function clearDb(){
+ $("dbId").value="";$("dbName").value="";$("dbCategory").value="Hlavné jedlo";$("dbWeight").value="";$("dbPrice").value="";$("dbAllergens").value="";$("saveDb").textContent="Pridať do databázy";
+}
 
-renderDishes();renderWeek();renderPreview();
+$("restaurantName").oninput=()=>{state.restaurant=$("restaurantName").value;save();renderPreview()};
+$("menuTitle").oninput=()=>{state.title=$("menuTitle").value;save();renderPreview()};
+$("tabMenu").onclick=()=>{$("menuPanel").classList.remove("hidden");$("dbPanel").classList.add("hidden");$("tabMenu").classList.add("active");$("tabDb").classList.remove("active")};
+$("tabDb").onclick=()=>{$("menuPanel").classList.add("hidden");$("dbPanel").classList.remove("hidden");$("tabDb").classList.add("active");$("tabMenu").classList.remove("active")};
+$("saveDb").onclick=()=>{
+ const name=$("dbName").value.trim(); if(!name) return alert("Zadaj názov položky.");
+ const id=$("dbId").value;
+ const d={id:id||uid(),name,category:$("dbCategory").value,weight:$("dbWeight").value.trim(),price:$("dbPrice").value.trim(),allergens:$("dbAllergens").value.trim()};
+ if(id) state.db=state.db.map(x=>x.id===id?d:x); else state.db.push(d);
+ save(); clearDb(); renderDb(); renderMenu(); renderPreview();
+};
+$("clearDb").onclick=clearDb;
+$("dbSearch").oninput=renderDb;
+$("printBtn").onclick=()=>window.print();
+$("backupBtn").onclick=()=>{const b=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="denne-menu-zaloha.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)};
+$("restoreBtn").onclick=()=>$("restoreFile").click();
+$("restoreFile").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{state=JSON.parse(await f.text());save();renderMenu();renderDb();renderPreview();alert("Záloha obnovená.")}catch(err){alert("Zálohu sa nepodarilo načítať.")}};
+
+renderMenu();renderDb();renderPreview();
 </script>
 </body>
 </html>
