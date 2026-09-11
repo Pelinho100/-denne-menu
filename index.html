@@ -62,7 +62,18 @@ input,select{
 }
 .day-edit-head strong{font-size:21px}
 .items{padding:8px 12px}
-.item{border-bottom:1px solid #eee;padding:10px 0}
+.item{
+  border-bottom:1px solid #ddd;
+  padding:14px 0;
+  margin-bottom:4px;
+}
+.item.manual-open{
+  background:#fafafa;
+  border:1px dashed #bbb;
+  border-radius:12px;
+  padding:12px;
+  margin:8px 0;
+}
 .item:last-child{border-bottom:0}
 .item-top{
   display:grid;grid-template-columns:50px 118px 1fr 85px auto;
@@ -179,15 +190,47 @@ input,select{
 .day-card-head .date{font-size:13px;font-weight:800}
 .section-title{
   display:flex;align-items:center;gap:8px;
-  font-size:13px;font-weight:800;text-transform:uppercase;margin:5px 0 3px
+  font-size:13px;font-weight:900;text-transform:uppercase;margin:7px 0 4px;
+  letter-spacing:.02em
 }
+.section-title.main-title{
+  background:#111;
+  color:#fff;
+  padding:4px 7px;
+  border-radius:4px;
+}
+.section-title.main-title:after{background:#fff}
+
 .section-title:after{content:"";height:1px;background:#111;flex:1}
 .menu-row{
-  display:grid;grid-template-columns:18px 1fr 42px 48px;
-  gap:4px;align-items:start;
-  font-size:10px;line-height:1.15;padding:1.2px 0;
+  display:grid;grid-template-columns:22px 1fr 42px 48px;
+  gap:5px;align-items:start;
+  font-size:10px;line-height:1.2;padding:2.2px 0;
   position:relative;z-index:1
 }
+.menu-row.main{
+  padding:3px 0 4px;
+  border-bottom:1px dotted #c8c8c8;
+}
+.menu-row.main:last-of-type{border-bottom:0}
+.menu-row.main .num{
+  font-family:Arial,sans-serif;
+  font-size:11px;
+  font-weight:900;
+  text-align:center;
+  border:1px solid #111;
+  border-radius:50%;
+  width:18px;
+  height:18px;
+  line-height:16px;
+  margin-top:-1px;
+}
+.menu-row.soup .num{
+  font-family:Arial,sans-serif;
+  font-weight:800;
+}
+.menu-row .name{padding-right:3px}
+
 .menu-row .num{font-weight:700}
 .menu-row .weight{text-align:right;white-space:nowrap}
 .menu-row .price{text-align:right;white-space:nowrap;font-weight:800}
@@ -231,6 +274,17 @@ input,select{
   font-family:Arial,sans-serif;font-size:8px
 }
 
+
+.custom-field{
+  display:none;
+  margin-top:7px;
+}
+.custom-field.show{display:block}
+.custom-field input{
+  background:#fffef8;
+  border:1px solid #999;
+}
+
 @media(max-width:820px){
   .settings{grid-template-columns:1fr}
   .day-edit-head{grid-template-columns:1fr 130px}
@@ -267,8 +321,17 @@ input,select{
   .day-card-head .date{font-size:8pt}
   .section-title{font-size:7.8pt}
   .menu-row{
-    grid-template-columns:4mm 1fr 10mm 11mm;
-    gap:1mm;font-size:6.1pt;line-height:1.1;padding:.2mm 0
+    grid-template-columns:5mm 1fr 10mm 11mm;
+    gap:1mm;font-size:6.1pt;line-height:1.1;padding:.25mm 0
+  }
+  .menu-row.main{padding:.7mm 0 .8mm}
+  .menu-row.main .num{
+    width:4.4mm;height:4.4mm;line-height:4mm;
+    font-size:6.1pt
+  }
+  .section-title.main-title{
+    padding:.8mm 1.5mm;
+    margin:1.6mm 0 1mm
   }
   .side-line{font-size:5pt;margin-left:5mm}
   .info-card{min-height:48mm;padding:3mm}
@@ -378,7 +441,7 @@ input,select{
 </div>
 
 <script>
-const STORE="dailyMenuV21";
+const STORE="dailyMenuV22";
 const DAYS=["Pondelok","Utorok","Streda","Štvrtok","Piatok"];
 const $=id=>document.getElementById(id);
 const uid=()=>Math.random().toString(36).slice(2)+Date.now().toString(36);
@@ -464,10 +527,12 @@ function fillDishSelect(sel,it){
   const e=document.createElement("option");e.value="";e.textContent="— Vyber jedlo —";sel.appendChild(e);
   state.db.filter(x=>x.category!=="Príloha").forEach(d=>{
     const o=document.createElement("option");o.value=d.name;o.textContent=`${d.category}: ${d.name}`;
-    if((it.sourceName||it.name)===d.name)o.selected=true;
+    if(it.sourceName!=="__custom__" && (it.sourceName||it.name)===d.name)o.selected=true;
     sel.appendChild(o);
   });
-  const c=document.createElement("option");c.value="__custom__";c.textContent="✎ Vlastné jedlo";sel.appendChild(c);
+  const c=document.createElement("option");c.value="__custom__";c.textContent="✎ Vlastné jedlo";
+  if(it.sourceName==="__custom__")c.selected=true;
+  sel.appendChild(c);
 }
 function fillSideSelect(sel,value){
   sel.innerHTML="";
@@ -510,17 +575,73 @@ function renderMenu(){
           <input class="weight" value="${esc(it.weight)}" placeholder="Gramáž">
           <input class="allergens" value="${esc(it.allergens)}" placeholder="Alergény">
         </div>
+        <div class="custom-field custom-dish"><input class="customDishInput" placeholder="Napíš vlastné jedlo"></div>
         <div class="item-sub"><select class="side"></select></div>
+        <div class="custom-field custom-side"><input class="customSideInput" placeholder="Napíš vlastnú prílohu"></div>
         <div class="extras"></div>`;
       const q=s=>box.querySelector(s);
       fillDishSelect(q(".dish"),it);
       fillSideSelect(q(".side"),it.side);
+      const customDishBox=q(".custom-dish");
+      const customDishInput=q(".customDishInput");
+      const customSideBox=q(".custom-side");
+      const customSideInput=q(".customSideInput");
+
+      if(it.sourceName==="__custom__"){
+        q(".dish").value="__custom__";
+        customDishBox.classList.add("show");
+        customDishInput.value=it.name||"";
+        box.classList.add("manual-open");
+      }
+      if(it.sideMode==="__custom__"){
+        q(".side").value="__custom__";
+        customSideBox.classList.add("show");
+        customSideInput.value=it.side||"";
+      }
+
       q(".dish").onchange=e=>{
-        if(e.target.value==="__custom__"){it.sourceName="";it.name=""}
-        else if(e.target.value)applyDish(it,e.target.value);
-        save();renderMenu();renderPreview();
+        const v=e.target.value;
+        if(v==="__custom__"){
+          it.sourceName="__custom__";
+          customDishBox.classList.add("show");
+          customDishInput.value=it.name||"";
+          box.classList.add("manual-open");
+        }else if(v){
+          applyDish(it,v);
+          it.sourceName=v;
+          customDishBox.classList.remove("show");
+          box.classList.remove("manual-open");
+        }else{
+          it.sourceName="";
+          customDishBox.classList.remove("show");
+          box.classList.remove("manual-open");
+        }
+        save();renderPreview();
       };
-      q(".side").onchange=e=>{it.side=e.target.value==="__custom__"?"":e.target.value;save();renderMenu();renderPreview()};
+      customDishInput.oninput=e=>{
+        it.sourceName="__custom__";
+        it.name=e.target.value;
+        save();renderPreview();
+      };
+
+      q(".side").onchange=e=>{
+        const v=e.target.value;
+        if(v==="__custom__"){
+          it.sideMode="__custom__";
+          customSideBox.classList.add("show");
+          customSideInput.value=it.side||"";
+        }else{
+          it.sideMode="";
+          it.side=v;
+          customSideBox.classList.remove("show");
+        }
+        save();renderPreview();
+      };
+      customSideInput.oninput=e=>{
+        it.sideMode="__custom__";
+        it.side=e.target.value;
+        save();renderPreview();
+      };
       q(".cat").onchange=e=>{it.category=e.target.value;save();renderMenu();renderPreview()};
       q(".price").oninput=e=>{it.price=e.target.value;save();renderPreview()};
       q(".name").oninput=e=>{it.name=e.target.value;save();renderPreview()};
@@ -531,11 +652,32 @@ function renderMenu(){
       const exhost=q(".extras");
       (it.extras||[]).forEach((ex,ei)=>{
         const r=document.createElement("div");r.className="extra";
-        r.innerHTML=`<input value="${esc(ex.label)}"><select></select><button class="red small">×</button>`;
-        const lab=r.querySelector("input"),sel=r.querySelector("select");
+        r.innerHTML=`<input class="extraLabel" value="${esc(ex.label)}"><select></select><input class="extraCustom" placeholder="Napíš vlastnú prílohu" style="display:none"><button class="red small">×</button>`;
+        const lab=r.querySelector(".extraLabel"),sel=r.querySelector("select"),extraCustom=r.querySelector(".extraCustom");
         fillSideSelect(sel,ex.text);
+        if(ex.mode==="__custom__"){
+          sel.value="__custom__";
+          extraCustom.style.display="block";
+          extraCustom.value=ex.text||"";
+        }
         lab.oninput=e=>{ex.label=e.target.value;save();renderPreview()};
-        sel.onchange=e=>{ex.text=e.target.value==="__custom__"?"":e.target.value;save();renderMenu();renderPreview()};
+        sel.onchange=e=>{
+          if(e.target.value==="__custom__"){
+            ex.mode="__custom__";
+            extraCustom.style.display="block";
+            extraCustom.value=ex.text||"";
+          }else{
+            ex.mode="";
+            ex.text=e.target.value;
+            extraCustom.style.display="none";
+          }
+          save();renderPreview();
+        };
+        extraCustom.oninput=e=>{
+          ex.mode="__custom__";
+          ex.text=e.target.value;
+          save();renderPreview();
+        };
         r.querySelector("button").onclick=()=>{it.extras.splice(ei,1);save();renderMenu();renderPreview()};
         exhost.appendChild(r);
       });
@@ -560,13 +702,13 @@ function makeDayCard(day){
   const mains=day.items.filter(x=>x.category!=="Polievka");
   if(soups.length){const h=document.createElement("div");h.className="section-title";h.textContent="Polievky";sec.appendChild(h)}
   soups.forEach(it=>{
-    const r=document.createElement("div");r.className="menu-row";
+    const r=document.createElement("div");r.className="menu-row soup";
     r.innerHTML=`<div class="num">${esc(it.code)}</div><div class="name">${esc(it.name)}${it.allergens?` (${esc(it.allergens)})`:""}</div><div class="weight">${esc(it.weight)}</div><div class="price">${esc(money(it.price))}</div>`;
     sec.appendChild(r);
   });
-  if(mains.length){const h=document.createElement("div");h.className="section-title";h.textContent="Hlavné jedlá";sec.appendChild(h)}
+  if(mains.length){const h=document.createElement("div");h.className="section-title main-title";h.textContent="Hlavné jedlá";sec.appendChild(h)}
   mains.forEach(it=>{
-    const r=document.createElement("div");r.className="menu-row";
+    const r=document.createElement("div");r.className="menu-row main";
     r.innerHTML=`<div class="num">${esc(it.code)}</div><div class="name">${esc(it.name)}${it.allergens?` (${esc(it.allergens)})`:""}</div><div class="weight">${esc(it.weight)}</div><div class="price">${esc(money(it.price))}</div>`;
     sec.appendChild(r);
     if(it.side){const s=document.createElement("div");s.className="side-line";s.innerHTML=`<b>Príloha:</b> ${esc(it.side)}`;sec.appendChild(s)}
