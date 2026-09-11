@@ -211,9 +211,10 @@ input,select{
 
 .section-title:after{content:"";height:1px;background:#111;flex:1}
 .menu-row{
-  display:grid;grid-template-columns:24px 1fr 46px 54px;
+  display:grid;grid-template-columns:24px 1fr 48px 56px;
   gap:5px;align-items:start;
-  font-size:12.8px;line-height:1.18;padding:2.4px 0;
+  font-size:14px;line-height:1.16;padding:4px 0;
+  border-bottom:1px dotted #bdbdbd;
   position:relative;z-index:1
 }
 .menu-row.main{
@@ -237,20 +238,20 @@ input,select{
   font-weight:800;
 }
 .menu-row .name{padding-right:3px}
+.inline-side{
+  display:block;
+  margin-top:2px;
+  font-family:Arial,sans-serif;
+  font-size:11.5px;
+  line-height:1.12;
+  font-weight:600;
+}
 
 .menu-row .num{font-weight:700}
 .menu-row .weight{text-align:right;white-space:nowrap}
 .menu-row .price{text-align:right;white-space:nowrap;font-weight:800}
 .menu-row .name{min-width:0}
-.side-line{
-  margin:0 0 4px 22px;
-  padding:0 0 4px 0;
-  font-size:11px;
-  line-height:1.12;
-  position:relative;
-  z-index:1;
-  border-bottom:1px dotted #c8c8c8;
-}
+.side-line{display:none}
 .info-card{
   border:1.5px solid #111;border-radius:11px;padding:10px 12px 8px;
   display:grid;grid-template-columns:1fr 1.2fr;gap:14px;align-items:center;
@@ -353,11 +354,11 @@ input,select{
     break-after:avoid-page !important;
   }
   .brand-small{font-size:9pt}
-  .brand-name{font-size:21pt}
+  .brand-name{font-size:18pt}
   .brand-city{font-size:6.5pt}
-  .menu-script{font-size:26pt}
+  .menu-script{font-size:22pt}
   .menu-sub{font-size:7pt}
-  .motto .script{font-size:15pt}
+  .motto .script{font-size:13pt}
   .poster-grid{
     min-height:0 !important;
     height:262mm !important;
@@ -369,7 +370,7 @@ input,select{
     gap:2mm !important;
   }
   .day-card{
-    padding:2.2mm 2.8mm 2mm;
+    padding:1.8mm 2.2mm 1.5mm;
     border-radius:3mm;
     flex:1 1 0;
   }
@@ -379,27 +380,28 @@ input,select{
   .poster-col:last-child .day-card{
     flex:1 1 0;
   }
-  .day-card-head .day{font-size:17pt}
-  .day-card-head .date{font-size:9pt}
-  .section-title{font-size:9pt}
+  .day-card-head .day{font-size:18pt}
+  .day-card-head .date{font-size:9.5pt}
+  .section-title{font-size:10.5pt}
   .menu-row{
     grid-template-columns:5mm 1fr 10mm 11mm;
-    gap:1mm;font-size:7.4pt;line-height:1.08;padding:.18mm 0
+    gap:1mm;font-size:9.2pt;line-height:1.08;padding:.45mm 0
   }
   .menu-row.main{padding:.7mm 0 .8mm}
   .menu-row.main .num{
     width:4.4mm;height:4.4mm;line-height:4mm;
-    font-size:7.2pt
+    font-size:8.8pt
   }
   .section-title.main-title{
     padding:.8mm 1.5mm;
     margin:1.6mm 0 1mm
   }
-  .side-line{
-    font-size:6.4pt;
-    margin-left:5mm;
-    margin-bottom:1mm;
-    padding-bottom:1mm;
+  .side-line{display:none}
+  .inline-side{
+    font-size:7.2pt;
+    line-height:1.05;
+    margin-top:.35mm;
+    font-weight:600;
   }
   .info-card{
     min-height:0 !important;
@@ -407,7 +409,7 @@ input,select{
     padding:3mm;
   }
   .info-message .script{font-size:15pt}
-  .info-brand{font-size:13pt}
+  .info-brand{font-size:11pt}
   .info-lines{font-size:7pt}
   .info-line{grid-template-columns:5mm 1fr;gap:1mm;margin:1.4mm 0}
   .info-bottom{font-size:6pt}
@@ -518,7 +520,7 @@ input,select{
 </div>
 
 <script>
-const STORE="dailyMenuV26";
+const STORE="dailyMenuV27";
 const DAYS=["Pondelok","Utorok","Streda","Štvrtok","Piatok"];
 const $=id=>document.getElementById(id);
 const uid=()=>Math.random().toString(36).slice(2)+Date.now().toString(36);
@@ -786,30 +788,12 @@ function makeDayCard(day){
   if(mains.length){const h=document.createElement("div");h.className="section-title main-title";h.textContent="Hlavné jedlá";sec.appendChild(h)}
   mains.forEach(it=>{
     const r=document.createElement("div");r.className="menu-row main";
-    r.innerHTML=`<div class="num">${esc(it.code)}</div><div class="name">${esc(it.name)}${it.allergens?` (${esc(it.allergens)})`:""}</div><div class="weight">${esc(it.weight)}</div><div class="price">${esc(money(it.price))}</div>`;
+    const sideParts=[];
+    if(it.side) sideParts.push(`Príloha: ${esc(it.side)}`);
+    (it.extras||[]).forEach(ex=>{if(ex.text) sideParts.push(`${esc(ex.label)}: ${esc(ex.text)}`)});
+    const sideInline=sideParts.length ? `<div class="inline-side">${sideParts.join(" • ")}</div>` : "";
+    r.innerHTML=`<div class="num">${esc(it.code)}</div><div class="name">${esc(it.name)}${it.allergens?` (${esc(it.allergens)})`:""}${sideInline}</div><div class="weight">${esc(it.weight)}</div><div class="price">${esc(money(it.price))}</div>`;
     sec.appendChild(r);
-    let hasSide=false;
-    if(it.side){
-      const s=document.createElement("div");
-      s.className="side-line";
-      s.innerHTML=`<b>Príloha:</b> ${esc(it.side)}`;
-      sec.appendChild(s);
-      hasSide=true;
-    }
-    (it.extras||[]).forEach(ex=>{
-      if(ex.text){
-        const s=document.createElement("div");
-        s.className="side-line";
-        s.innerHTML=`<b>${esc(ex.label)}:</b> ${esc(ex.text)}`;
-        sec.appendChild(s);
-        hasSide=true;
-      }
-    });
-    if(!hasSide){
-      r.style.borderBottom="1px dotted #c8c8c8";
-      r.style.paddingBottom="4px";
-      r.style.marginBottom="4px";
-    }
   });
   return sec;
 }
