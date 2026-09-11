@@ -192,7 +192,7 @@ input,select{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;ba
 <datalist id="sideList"></datalist>
 
 <script>
-const STORE="dailyMenuV17";
+const STORE="dailyMenuV18";
 const DAYS=["Pondelok","Utorok","Streda","Štvrtok","Piatok"];
 const $=id=>document.getElementById(id);
 const uid=()=>Math.random().toString(36).slice(2)+Date.now().toString(36);
@@ -257,6 +257,13 @@ function freshState(){
 let state;
 try{state=JSON.parse(localStorage.getItem(STORE)||"null")}catch(e){state=null}
 if(!state || !state.days || state.days.length!==5) state=freshState();
+state.restaurant = state.restaurant || "Reštaurácia U Mastina";
+state.phone = state.phone || "0900 123 456";
+state.address = state.address || "Hlavná 1, 905 01 Senica";
+state.contactExtra = state.contactExtra || "www.umastina.sk";
+state.title = state.title || "OBEDOVÉ MENU";
+state.db = Array.isArray(state.db) && state.db.length ? state.db : seedDb();
+state.days = Array.isArray(state.days) && state.days.length===5 ? state.days : freshState().days;
 function save(){localStorage.setItem(STORE,JSON.stringify(state))}
 
 function renumber(day){
@@ -306,6 +313,45 @@ function fillSideSelect(sel,value){
  sel.appendChild(custom);
 }
 
+function fillDishSelect(sel,it){
+ sel.innerHTML="";
+ const empty=document.createElement("option");
+ empty.value="";
+ empty.textContent="— Vyber jedlo z databázy —";
+ sel.appendChild(empty);
+ state.db.filter(x=>x.category!=="Príloha").forEach(d=>{
+  const o=document.createElement("option");
+  o.value=d.name;
+  o.textContent=`${d.category}: ${d.name}`;
+  if((it.sourceName||it.name)===d.name) o.selected=true;
+  sel.appendChild(o);
+ });
+ const custom=document.createElement("option");
+ custom.value="__custom__";
+ custom.textContent="✎ Vlastné jedlo";
+ if((it.sourceName||it.name) && !state.db.some(d=>d.category!=="Príloha" && d.name===(it.sourceName||it.name))) custom.selected=true;
+ sel.appendChild(custom);
+}
+function fillSideSelect(sel,value){
+ sel.innerHTML="";
+ const empty=document.createElement("option");
+ empty.value="";
+ empty.textContent="— Bez prílohy / vyber prílohu —";
+ sel.appendChild(empty);
+ state.db.filter(x=>x.category==="Príloha").forEach(d=>{
+  const o=document.createElement("option");
+  o.value=d.name;
+  o.textContent=d.name;
+  if(value===d.name) o.selected=true;
+  sel.appendChild(o);
+ });
+ const custom=document.createElement("option");
+ custom.value="__custom__";
+ custom.textContent="✎ Vlastná príloha";
+ if(value && !state.db.some(d=>d.category==="Príloha" && d.name===value)) custom.selected=true;
+ sel.appendChild(custom);
+}
+
 function renderMenu(){
  refreshLists();
  $("restaurant").value=state.restaurant;
@@ -314,26 +360,40 @@ function renderMenu(){
  $("contactExtra").value=state.contactExtra||"";
  $("title").value=state.title;
  $("mondayDate").value=state.days[0].date;
- const host=$("days");host.innerHTML="";
+ const host=$("days");
+ host.innerHTML="";
  state.days.forEach((day,di)=>{
   renumber(day);
-  const card=document.createElement("div");card.className="day";
-  const head=document.createElement("div");head.className="day-head";
+  const card=document.createElement("div");
+  card.className="day";
+
+  const head=document.createElement("div");
+  head.className="day-head";
   head.innerHTML=`<strong>${day.name}</strong><input type="date" value="${day.date}" readonly>`;
   card.appendChild(head);
-  const items=document.createElement("div");items.className="items";
+
+  const items=document.createElement("div");
+  items.className="items";
+
   day.items.forEach((it,ii)=>{
-   const box=document.createElement("div");box.className="item";
+   const box=document.createElement("div");
+   box.className="item";
    box.innerHTML=`
     <div class="item-top">
       <input value="${esc(it.code)}" readonly>
-      <select class="cat"><option ${it.category==="Polievka"?"selected":""}>Polievka</option><option ${it.category==="Hlavné jedlo"?"selected":""}>Hlavné jedlo</option></select>
+      <select class="cat">
+        <option ${it.category==="Polievka"?"selected":""}>Polievka</option>
+        <option ${it.category==="Hlavné jedlo"?"selected":""}>Hlavné jedlo</option>
+      </select>
       <select class="dish"></select>
       <input class="price" value="${esc(it.price)}" placeholder="Cena">
-      <div class="actions"><button class="gray small addExtra">+ príloha</button><button class="red small del">×</button></div>
+      <div class="actions">
+        <button class="gray small addExtra">+ príloha</button>
+        <button class="red small del">×</button>
+      </div>
     </div>
     <div class="item-sub">
-      <input class="name" value="${esc(it.name)}" placeholder="Názov">
+      <input class="name" value="${esc(it.name)}" placeholder="Názov jedla">
       <input class="weight" value="${esc(it.weight)}" placeholder="Gramáž">
       <input class="allergens" value="${esc(it.allergens)}" placeholder="Alergény">
     </div>
@@ -341,50 +401,117 @@ function renderMenu(){
       <select class="side"></select>
     </div>
     <div class="extras"></div>`;
+
    const q=s=>box.querySelector(s);
    fillDishSelect(q(".dish"),it);
    fillSideSelect(q(".side"),it.side);
+
    q(".dish").onchange=e=>{
-     if(e.target.value==="__custom__"){ it.sourceName=""; it.name=""; save(); renderMenu(); renderPreview(); return; }
-     applyDish(it,e.target.value); save(); renderMenu(); renderPreview();
+     const v=e.target.value;
+     if(v==="__custom__"){
+       it.sourceName="";
+       it.name="";
+     } else if(v){
+       applyDish(it,v);
+     }
+     save(); renderMenu(); renderPreview();
    };
+
    q(".side").onchange=e=>{
-     if(e.target.value==="__custom__"){ it.side=""; save(); renderMenu(); renderPreview(); return; }
-     it.side=e.target.value; save(); renderMenu(); renderPreview();
+     const v=e.target.value;
+     it.side = v==="__custom__" ? "" : v;
+     save(); renderMenu(); renderPreview();
    };
-   [[".cat","category"],[".price","price"],[".name","name"],[".weight","weight"],[".allergens","allergens"]].forEach(([sel,key])=>{
-    q(sel).oninput=e=>{it[key]=e.target.value;save();renderPreview()};
-   });
-   q(".cat").onchange=e=>{it.category=e.target.value;save();renderMenu();renderPreview()};
-   q(".del").onclick=()=>{day.items.splice(ii,1);renumber(day);save();renderMenu();renderPreview()};
-   q(".addExtra").onclick=()=>{it.extras=it.extras||[];it.extras.push({label:"Príloha",text:""});save();renderMenu();renderPreview()};
+
+   q(".cat").onchange=e=>{
+     it.category=e.target.value;
+     save(); renderMenu(); renderPreview();
+   };
+
+   q(".price").oninput=e=>{it.price=e.target.value; save(); renderPreview();};
+   q(".name").oninput=e=>{it.name=e.target.value; save(); renderPreview();};
+   q(".weight").oninput=e=>{it.weight=e.target.value; save(); renderPreview();};
+   q(".allergens").oninput=e=>{it.allergens=e.target.value; save(); renderPreview();};
+
+   q(".del").onclick=()=>{
+     day.items.splice(ii,1);
+     renumber(day);
+     save();
+     renderMenu();
+     renderPreview();
+   };
+
+   q(".addExtra").onclick=()=>{
+     it.extras=it.extras||[];
+     it.extras.push({label:"Príloha",text:""});
+     save();
+     renderMenu();
+     renderPreview();
+   };
+
    const exhost=q(".extras");
    (it.extras||[]).forEach((ex,ei)=>{
-    const r=document.createElement("div");r.className="extra";
-    r.innerHTML=`<input value="${esc(ex.label)}"><select class="extraSide"></select><button class="red small">×</button>`;
-    const lab=r.querySelector("input");
-    const sel=r.querySelector(".extraSide");
-    lab.oninput=e=>{ex.label=e.target.value;save();renderPreview()};
-    fillSideSelect(sel,ex.text);
-    sel.onchange=e=>{ex.text=e.target.value==="__custom__"?"":e.target.value;save();renderMenu();renderPreview()};
-    r.querySelector("button").onclick=()=>{it.extras.splice(ei,1);save();renderMenu();renderPreview()};
-    exhost.appendChild(r);
+     const r=document.createElement("div");
+     r.className="extra";
+     r.innerHTML=`<input value="${esc(ex.label)}"><select class="extraSide"></select><button class="red small">×</button>`;
+     const lab=r.querySelector("input");
+     const sel=r.querySelector(".extraSide");
+     fillSideSelect(sel,ex.text);
+
+     lab.oninput=e=>{ex.label=e.target.value; save(); renderPreview();};
+     sel.onchange=e=>{
+       ex.text = e.target.value==="__custom__" ? "" : e.target.value;
+       save();
+       renderMenu();
+       renderPreview();
+     };
+     r.querySelector("button").onclick=()=>{
+       it.extras.splice(ei,1);
+       save();
+       renderMenu();
+       renderPreview();
+     };
+     exhost.appendChild(r);
    });
+
    items.appendChild(box);
   });
+
   card.appendChild(items);
-  const add=document.createElement("div");add.className="add-row";
-  const b1=document.createElement("button");b1.className="gray";b1.textContent="+ Polievka";
-  b1.onclick=()=>{day.items.push({id:uid(),category:"Polievka",sourceName:"",name:"",weight:"0,33 l",price:"2,20",allergens:"",side:"",extras:[]});renumber(day);save();renderMenu();renderPreview()};
-  const b2=document.createElement("button");b2.className="gray";b2.textContent="+ Hlavné jedlo";
-  b2.onclick=()=>{day.items.push({id:uid(),category:"Hlavné jedlo",sourceName:"",name:"",weight:"150 g",price:"7,50",allergens:"",side:"",extras:[]});renumber(day);save();renderMenu();renderPreview()};
-  const b3=document.createElement("button");b3.className="gray";b3.textContent="Kopírovať predošlý deň";
-  b3.onclick=()=>{if(di===0)return;day.items=JSON.parse(JSON.stringify(state.days[di-1].items)).map(x=>({...x,id:uid()}));renumber(day);save();renderMenu();renderPreview()};
-  add.append(b1,b2,b3);card.appendChild(add);
+
+  const add=document.createElement("div");
+  add.className="add-row";
+
+  const b1=document.createElement("button");
+  b1.className="gray";
+  b1.textContent="+ Polievka";
+  b1.onclick=()=>{
+    day.items.push({id:uid(),category:"Polievka",sourceName:"",name:"",weight:"0,33 l",price:"2,20",allergens:"",side:"",extras:[]});
+    renumber(day); save(); renderMenu(); renderPreview();
+  };
+
+  const b2=document.createElement("button");
+  b2.className="gray";
+  b2.textContent="+ Hlavné jedlo";
+  b2.onclick=()=>{
+    day.items.push({id:uid(),category:"Hlavné jedlo",sourceName:"",name:"",weight:"150 g",price:"7,50",allergens:"",side:"",extras:[]});
+    renumber(day); save(); renderMenu(); renderPreview();
+  };
+
+  const b3=document.createElement("button");
+  b3.className="gray";
+  b3.textContent="Kopírovať predošlý deň";
+  b3.onclick=()=>{
+    if(di===0)return;
+    day.items=JSON.parse(JSON.stringify(state.days[di-1].items)).map(x=>({...x,id:uid()}));
+    renumber(day); save(); renderMenu(); renderPreview();
+  };
+
+  add.append(b1,b2,b3);
+  card.appendChild(add);
   host.appendChild(card);
  });
 }
-
 function dayBox(day){
  renumber(day);
  const sec=document.createElement("div");sec.className="day-box";
@@ -472,6 +599,13 @@ $("restoreFile").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{s
 window.addEventListener("resize",fitPreview);
 
 renderMenu();renderDb();renderPreview();
+</script>
+<div id="jsError" style="display:none;position:fixed;left:12px;right:12px;bottom:12px;background:#fff3f3;border:1px solid #d88;color:#900;padding:10px;border-radius:10px;font:13px Arial;z-index:9999"></div>
+<script>
+window.addEventListener("error",function(e){
+ const b=document.getElementById("jsError");
+ if(b){b.style.display="block";b.textContent="Chyba stránky: "+(e.message||"neznáma chyba");}
+});
 </script>
 </body>
 </html>
