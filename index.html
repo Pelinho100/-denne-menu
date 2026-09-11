@@ -44,13 +44,13 @@ input,select{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;ba
 .preview-title{font-size:20px;font-weight:800;margin:0 0 10px}
 .a4-stage{overflow:auto;background:#dcdcdc;border-radius:16px;padding:10px}
 .a4{
-  width:794px;
-  height:1123px;
+  width:1123px;
+  height:794px;
   overflow:hidden;
   margin:0 auto;
   background:#fff;
   color:#111;
-  padding:24px 28px 20px;
+  padding:20px 24px 16px;
   box-shadow:0 4px 18px rgba(0,0,0,.12);
   font-family:Georgia,"Times New Roman",serif;
 }
@@ -58,15 +58,15 @@ input,select{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;ba
 .a4-rest{font-size:17px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
 .a4-title{font-size:30px;font-weight:800;letter-spacing:.02em;margin:1px 0}
 .a4-meta{display:flex;justify-content:space-between;gap:20px;font-family:Arial,sans-serif;font-size:10px;font-weight:700}
-.menu-columns{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid #111;border-bottom:0}
+.menu-columns{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid #111;border-bottom:0;height:660px}
 .col{display:flex;flex-direction:column}
 .col:first-child{border-right:1px solid #111}
-.day-box{padding:8px 10px 6px;border-bottom:1px solid #111}
+.day-box{padding:7px 9px 5px;border-bottom:1px solid #111}
 .day-title{display:flex;justify-content:space-between;align-items:baseline;gap:10px;border-bottom:1px solid #111;padding-bottom:3px;margin-bottom:5px}
 .day-title b{font-family:Arial,sans-serif;font-size:14px}
 .day-title span{font-family:Arial,sans-serif;font-size:9.5px;font-weight:700}
 .section-label{font-family:Arial,sans-serif;font-size:8.7px;font-weight:800;text-transform:uppercase;margin:3px 0 1px;letter-spacing:.04em}
-.menu-line{display:grid;grid-template-columns:16px 1fr 50px;gap:4px;align-items:start;font-size:9.2px;line-height:1.14;padding:.7px 0}
+.menu-line{display:grid;grid-template-columns:16px 1fr 50px;gap:4px;align-items:start;font-size:9.4px;line-height:1.12;padding:.55px 0}
 .menu-line .num{font-weight:700}
 .menu-line .price{text-align:right;white-space:nowrap;font-family:Arial,sans-serif;font-size:8.8px;font-weight:700}
 .menu-line .all{font-size:8.5px}
@@ -90,13 +90,13 @@ input,select{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;ba
  .a4{transform-origin:top left}
 }
 @media print{
- @page{size:A4 portrait;margin:0}
+ @page{size:A4 landscape;margin:0}
  body{background:#fff}
  header,.editor,.preview-title{display:none!important}
  .wrap{max-width:none;padding:0;margin:0}
  .preview-wrap{margin:0}
  .a4-stage{padding:0;background:#fff;overflow:visible}
- .a4{width:210mm;height:297mm;overflow:hidden;margin:0;padding:6mm 7mm 5mm;box-shadow:none}
+ .a4{width:297mm;height:210mm;overflow:hidden;margin:0;padding:5mm 6mm 4mm;box-shadow:none}
  .a4-rest{font-size:12pt}
  .a4-title{font-size:22pt}
  .a4-meta{font-size:7.5pt}
@@ -141,7 +141,7 @@ input,select{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;ba
     <div><label>Nadpis</label><input id="title"></div>
     <div><label>Dátum pondelka</label><input id="mondayDate" type="date"></div>
    </div>
-   <div class="help"><b>Pondelok, Utorok a Streda sú v ľavom stĺpci. Štvrtok a Piatok v pravom.</b> V pravom dolnom rohu sú informácie o reštaurácii. Pri každom jedle aj prílohe môžeš vyberať z databázy alebo napísať vlastný názov.</div>
+   <div class="help"><b>Pondelok, Utorok a Streda sú v ľavom stĺpci. Štvrtok a Piatok v pravom.</b> V pravom dolnom rohu sú informácie o reštaurácii. Pri každom jedle aj prílohe je teraz skutočný rozbaľovací zoznam z databázy. V prípade potreby môžeš zvoliť aj vlastnú položku.</div>
   </div>
   <div id="days"></div>
  </div>
@@ -192,7 +192,7 @@ input,select{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;ba
 <datalist id="sideList"></datalist>
 
 <script>
-const STORE="dailyMenuV16";
+const STORE="dailyMenuV17";
 const DAYS=["Pondelok","Utorok","Streda","Štvrtok","Piatok"];
 const $=id=>document.getElementById(id);
 const uid=()=>Math.random().toString(36).slice(2)+Date.now().toString(36);
@@ -283,6 +283,29 @@ function applySide(it,name){
  it.side=d.name;
 }
 
+function fillDishSelect(sel,it){
+ sel.innerHTML="";
+ const empty=document.createElement("option"); empty.value=""; empty.textContent="— Vyber jedlo z databázy —"; sel.appendChild(empty);
+ state.db.filter(x=>x.category!=="Príloha").forEach(d=>{
+  const o=document.createElement("option"); o.value=d.name; o.textContent=`${d.category}: ${d.name}`;
+  if((it.sourceName||it.name)===d.name) o.selected=true;
+  sel.appendChild(o);
+ });
+ const custom=document.createElement("option"); custom.value="__custom__"; custom.textContent="✎ Vlastné jedlo";
+ if((it.sourceName||it.name) && !state.db.some(d=>d.category!=="Príloha" && d.name===(it.sourceName||it.name))) custom.selected=true;
+ sel.appendChild(custom);
+}
+function fillSideSelect(sel,value){
+ sel.innerHTML="";
+ const empty=document.createElement("option"); empty.value=""; empty.textContent="— Bez prílohy / vyber prílohu —"; sel.appendChild(empty);
+ state.db.filter(x=>x.category==="Príloha").forEach(d=>{
+  const o=document.createElement("option"); o.value=d.name; o.textContent=d.name; if(value===d.name) o.selected=true; sel.appendChild(o);
+ });
+ const custom=document.createElement("option"); custom.value="__custom__"; custom.textContent="✎ Vlastná príloha";
+ if(value && !state.db.some(d=>d.category==="Príloha" && d.name===value)) custom.selected=true;
+ sel.appendChild(custom);
+}
+
 function renderMenu(){
  refreshLists();
  $("restaurant").value=state.restaurant;
@@ -305,7 +328,7 @@ function renderMenu(){
     <div class="item-top">
       <input value="${esc(it.code)}" readonly>
       <select class="cat"><option ${it.category==="Polievka"?"selected":""}>Polievka</option><option ${it.category==="Hlavné jedlo"?"selected":""}>Hlavné jedlo</option></select>
-      <input class="dish" list="dishList" value="${esc(it.sourceName||it.name)}" placeholder="Vyber z databázy">
+      <select class="dish"></select>
       <input class="price" value="${esc(it.price)}" placeholder="Cena">
       <div class="actions"><button class="gray small addExtra">+ príloha</button><button class="red small del">×</button></div>
     </div>
@@ -315,13 +338,21 @@ function renderMenu(){
       <input class="allergens" value="${esc(it.allergens)}" placeholder="Alergény">
     </div>
     <div class="item-sub">
-      <input class="side" list="sideList" value="${esc(it.side)}" placeholder="Vyber prílohu z databázy">
+      <select class="side"></select>
     </div>
     <div class="extras"></div>`;
    const q=s=>box.querySelector(s);
-   q(".dish").onchange=e=>{applyDish(it,e.target.value);save();renderMenu();renderPreview()};
-   q(".side").onchange=e=>{applySide(it,e.target.value);save();renderMenu();renderPreview()};
-   [[".cat","category"],[".price","price"],[".name","name"],[".weight","weight"],[".allergens","allergens"],[".side","side"]].forEach(([sel,key])=>{
+   fillDishSelect(q(".dish"),it);
+   fillSideSelect(q(".side"),it.side);
+   q(".dish").onchange=e=>{
+     if(e.target.value==="__custom__"){ it.sourceName=""; it.name=""; save(); renderMenu(); renderPreview(); return; }
+     applyDish(it,e.target.value); save(); renderMenu(); renderPreview();
+   };
+   q(".side").onchange=e=>{
+     if(e.target.value==="__custom__"){ it.side=""; save(); renderMenu(); renderPreview(); return; }
+     it.side=e.target.value; save(); renderMenu(); renderPreview();
+   };
+   [[".cat","category"],[".price","price"],[".name","name"],[".weight","weight"],[".allergens","allergens"]].forEach(([sel,key])=>{
     q(sel).oninput=e=>{it[key]=e.target.value;save();renderPreview()};
    });
    q(".cat").onchange=e=>{it.category=e.target.value;save();renderMenu();renderPreview()};
@@ -330,11 +361,12 @@ function renderMenu(){
    const exhost=q(".extras");
    (it.extras||[]).forEach((ex,ei)=>{
     const r=document.createElement("div");r.className="extra";
-    r.innerHTML=`<input value="${esc(ex.label)}"><input list="sideList" value="${esc(ex.text)}" placeholder="Vyber ďalšiu prílohu"><button class="red small">×</button>`;
-    const ins=r.querySelectorAll("input");
-    ins[0].oninput=e=>{ex.label=e.target.value;save();renderPreview()};
-    ins[1].onchange=e=>{const d=state.db.find(x=>x.name.toLowerCase()===e.target.value.trim().toLowerCase() && x.category==="Príloha");ex.text=d?d.name:e.target.value;save();renderMenu();renderPreview()};
-    ins[1].oninput=e=>{ex.text=e.target.value;save();renderPreview()};
+    r.innerHTML=`<input value="${esc(ex.label)}"><select class="extraSide"></select><button class="red small">×</button>`;
+    const lab=r.querySelector("input");
+    const sel=r.querySelector(".extraSide");
+    lab.oninput=e=>{ex.label=e.target.value;save();renderPreview()};
+    fillSideSelect(sel,ex.text);
+    sel.onchange=e=>{ex.text=e.target.value==="__custom__"?"":e.target.value;save();renderMenu();renderPreview()};
     r.querySelector("button").onclick=()=>{it.extras.splice(ei,1);save();renderMenu();renderPreview()};
     exhost.appendChild(r);
    });
@@ -396,9 +428,9 @@ function renderPreview(){
 function fitPreview(){
  if(window.innerWidth>820){$("a4").style.transform="none";$("a4").style.marginBottom="0";return}
  const stage=document.querySelector(".a4-stage");
- const scale=Math.min(1,(stage.clientWidth||window.innerWidth)/794);
+ const scale=Math.min(1,(stage.clientWidth||window.innerWidth)/1123);
  $("a4").style.transform=`scale(${scale})`;
- $("a4").style.marginBottom=`${-(1123*(1-scale))}px`;
+ $("a4").style.marginBottom=`${-(794*(1-scale))}px`;
 }
 function renderDb(){
  const q=$("dbSearch").value.toLowerCase(),host=$("dbList");host.innerHTML="";
