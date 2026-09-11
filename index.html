@@ -63,18 +63,60 @@ input,select{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;ba
 .col:first-child{border-right:1px solid #111}
 .day-box{padding:7px 9px 5px;border-bottom:1px solid #111}
 .day-title{display:flex;justify-content:space-between;align-items:baseline;gap:10px;border-bottom:1px solid #111;padding-bottom:3px;margin-bottom:5px}
-.day-title b{font-family:Arial,sans-serif;font-size:14px}
+.day-title b{font-family:Arial,sans-serif;font-size:13px}
 .day-title span{font-family:Arial,sans-serif;font-size:9.5px;font-weight:700}
 .section-label{font-family:Arial,sans-serif;font-size:8.7px;font-weight:800;text-transform:uppercase;margin:3px 0 1px;letter-spacing:.04em}
 .menu-line{display:grid;grid-template-columns:16px 1fr 50px;gap:4px;align-items:start;font-size:9.4px;line-height:1.12;padding:.55px 0}
 .menu-line .num{font-weight:700}
 .menu-line .price{text-align:right;white-space:nowrap;font-family:Arial,sans-serif;font-size:8.8px;font-weight:700}
 .menu-line .all{font-size:8.5px}
-.menu-side{font-size:7.8px;line-height:1.06;margin:0 0 0 20px;color:#222}
-.info-box{margin-top:auto;padding:10px;border-bottom:1px solid #111;font-family:Arial,sans-serif}
+.menu-side{font-size:7.3px;line-height:1.04;margin:0 0 0 18px;color:#222}
+.info-box{padding:10px;font-family:Arial,sans-serif}
 .info-title{font-size:11px;font-weight:800;text-transform:uppercase;margin-bottom:4px}
 .info-row{display:grid;grid-template-columns:72px 1fr;gap:5px;font-size:9px;line-height:1.25;margin:2px 0}
 .a4-foot{display:flex;justify-content:space-between;gap:12px;border-top:2px solid #111;margin-top:8px;padding-top:5px;font-family:Arial,sans-serif;font-size:8px}
+
+
+.five-days{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:7px;
+  height:640px;
+}
+.day-box{
+  border:1px solid #111;
+  padding:7px 7px 5px;
+  overflow:hidden;
+  background:#fff;
+}
+.restaurant-strip{
+  margin-top:8px;
+  border:1px solid #111;
+  display:grid;
+  grid-template-columns:1.4fr 1fr 1fr 1fr;
+  font-family:Arial,sans-serif;
+}
+.restaurant-strip > div{
+  padding:7px 9px;
+  border-right:1px solid #111;
+  font-size:9px;
+  line-height:1.2;
+}
+.restaurant-strip > div:last-child{border-right:0}
+.restaurant-strip b{display:block;font-size:8px;text-transform:uppercase;margin-bottom:2px}
+.day-title{
+  display:block;
+  text-align:center;
+  border-bottom:1px solid #111;
+  padding-bottom:4px;
+  margin-bottom:5px
+}
+.day-title b{display:block;font-family:Arial,sans-serif;font-size:14px;letter-spacing:.03em;text-transform:uppercase}
+.day-title span{display:block;font-family:Arial,sans-serif;font-size:9px;font-weight:700;margin-top:1px}
+.section-label{font-family:Arial,sans-serif;font-size:8.4px;font-weight:800;text-transform:uppercase;margin:4px 0 2px;letter-spacing:.04em}
+.menu-line{display:grid;grid-template-columns:14px 1fr;gap:3px;align-items:start;font-size:8.6px;line-height:1.12;padding:.7px 0}
+.menu-line .price{grid-column:2;text-align:right;white-space:nowrap;font-family:Arial,sans-serif;font-size:8px;font-weight:700;margin-top:-1px}
+.menu-side{font-size:7.1px;line-height:1.05;margin:0 0 0 17px;color:#222}
 
 @media(max-width:820px){
  .settings{grid-template-columns:1fr}
@@ -100,15 +142,28 @@ input,select{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;ba
  .a4-rest{font-size:12pt}
  .a4-title{font-size:22pt}
  .a4-meta{font-size:7.5pt}
- .day-title b{font-size:9pt}
- .day-title span{font-size:6.5pt}
- .section-label{font-size:5.7pt}
- .menu-line{font-size:5.8pt;line-height:1.08;grid-template-columns:3.2mm 1fr 12mm;gap:.8mm;padding:.18mm 0}
- .menu-line .price{font-size:5.4pt}
- .menu-side{font-size:4.9pt;margin-left:4.2mm}
- .info-title{font-size:6.6pt}
- .info-row{font-size:5.4pt;grid-template-columns:17mm 1fr}
- .a4-foot{font-size:5.5pt}
+ .week-cards{height:172mm;gap:2mm}
+ .day-box,.info-box{padding:2mm 2.3mm 1.5mm}
+ .day-title b{font-size:8.4pt}
+ .day-title span{font-size:6.1pt}
+ .section-label{font-size:5.4pt}
+ .menu-line{font-size:5.35pt;line-height:1.03;grid-template-columns:3mm 1fr 11mm;gap:.7mm;padding:.12mm 0}
+ .menu-line .price{font-size:5pt}
+ .menu-side{font-size:4.55pt;margin-left:4mm}
+ .info-title{font-size:6.4pt}
+ .info-row{font-size:5.2pt;grid-template-columns:16mm 1fr}
+ .five-days{height:163mm;gap:1.6mm}
+ .day-box{padding:1.7mm 1.8mm 1.3mm}
+ .restaurant-strip{margin-top:1.6mm}
+ .restaurant-strip > div{padding:1.5mm 2mm;font-size:5.6pt}
+ .restaurant-strip b{font-size:5pt}
+ .day-title b{font-size:8.2pt}
+ .day-title span{font-size:5.7pt}
+ .section-label{font-size:5.2pt}
+ .menu-line{font-size:5.15pt;line-height:1.02;grid-template-columns:3mm 1fr;gap:.6mm;padding:.12mm 0}
+ .menu-line .price{font-size:4.9pt}
+ .menu-side{font-size:4.45pt;margin-left:3.7mm}
+ .a4-foot{font-size:5.3pt}
 }
 </style>
 </head>
@@ -117,7 +172,7 @@ input,select{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;ba
  <div class="header-inner">
   <h1>Týždenné denné menu</h1>
   <div class="toolbar">
-   <button onclick="window.print()">Tlačiť A4</button>
+   <button id="printBtn">Tlačiť A4</button>
    <button class="gray" id="backupBtn">Záloha</button>
    <button class="gray" id="restoreBtn">Obnoviť</button>
    <input id="restoreFile" type="file" accept=".json,application/json" hidden>
@@ -141,7 +196,7 @@ input,select{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;ba
     <div><label>Nadpis</label><input id="title"></div>
     <div><label>Dátum pondelka</label><input id="mondayDate" type="date"></div>
    </div>
-   <div class="help"><b>Pondelok, Utorok a Streda sú v ľavom stĺpci. Štvrtok a Piatok v pravom.</b> V pravom dolnom rohu sú informácie o reštaurácii. Pri každom jedle aj prílohe je teraz skutočný rozbaľovací zoznam z databázy. V prípade potreby môžeš zvoliť aj vlastnú položku.</div>
+   <div class="help"><b>Nové rozloženie A4: hore Pondelok, Utorok, Streda; dole Štvrtok, Piatok a informácie o reštaurácii.</b> V pravom dolnom rohu sú informácie o reštaurácii. Pri každom jedle aj prílohe je teraz skutočný rozbaľovací zoznam z databázy. V prípade potreby môžeš zvoliť aj vlastnú položku.</div>
   </div>
   <div id="days"></div>
  </div>
@@ -175,10 +230,8 @@ input,select{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;ba
       <div id="pvPhone"></div>
      </div>
     </div>
-    <div class="menu-columns">
-      <div class="col" id="leftCol"></div>
-      <div class="col" id="rightCol"></div>
-    </div>
+    <div class="five-days" id="fiveDays"></div>
+    <div class="restaurant-strip" id="restaurantStrip"></div>
     <div class="a4-foot">
      <div>Alergény sú uvedené v zátvorke.</div>
      <div>Zmeny v ponuke vyhradené.</div>
@@ -192,7 +245,7 @@ input,select{width:100%;padding:11px;border:1px solid #ccc;border-radius:10px;ba
 <datalist id="sideList"></datalist>
 
 <script>
-const STORE="dailyMenuV18";
+const STORE="dailyMenuV20";
 const DAYS=["Pondelok","Utorok","Streda","Štvrtok","Piatok"];
 const $=id=>document.getElementById(id);
 const uid=()=>Math.random().toString(36).slice(2)+Date.now().toString(36);
@@ -514,23 +567,24 @@ function renderMenu(){
 }
 function dayBox(day){
  renumber(day);
- const sec=document.createElement("div");sec.className="day-box";
+ const sec=document.createElement("div");
+ sec.className="day-box";
  sec.innerHTML=`<div class="day-title"><b>${day.name}</b><span>${fmt(day.date)}</span></div>`;
  const soups=day.items.filter(x=>x.category==="Polievka");
  const mains=day.items.filter(x=>x.category!=="Polievka");
  if(soups.length){const l=document.createElement("div");l.className="section-label";l.textContent="Polievky";sec.appendChild(l)}
  soups.forEach(it=>{
-  const line=document.createElement("div");line.className="menu-line";
-  line.innerHTML=`<div class="num">${esc(it.code)}</div><div>${esc(it.name)}${it.allergens?` <span class="all">(${esc(it.allergens)})</span>`:""}</div><div class="price">${esc(money(it.price))}</div>`;
-  sec.appendChild(line);
+   const line=document.createElement("div"); line.className="menu-line";
+   line.innerHTML=`<div class="num">${esc(it.code)}</div><div>${esc(it.name)}${it.allergens?` <span class="all">(${esc(it.allergens)})</span>`:""}<div class="price">${esc(money(it.price))}</div></div>`;
+   sec.appendChild(line);
  });
  if(mains.length){const l=document.createElement("div");l.className="section-label";l.textContent="Hlavné jedlá";sec.appendChild(l)}
  mains.forEach(it=>{
-  const line=document.createElement("div");line.className="menu-line";
-  line.innerHTML=`<div class="num">${esc(it.code)}</div><div>${esc(it.name)}${it.allergens?` <span class="all">(${esc(it.allergens)})</span>`:""}</div><div class="price">${esc(money(it.price))}</div>`;
-  sec.appendChild(line);
-  if(it.side){const s=document.createElement("div");s.className="menu-side";s.innerHTML=`<b>Príloha:</b> ${esc(it.side)}`;sec.appendChild(s)}
-  (it.extras||[]).forEach(ex=>{if(ex.text){const s=document.createElement("div");s.className="menu-side";s.innerHTML=`<b>${esc(ex.label)}:</b> ${esc(ex.text)}`;sec.appendChild(s)}})
+   const line=document.createElement("div"); line.className="menu-line";
+   line.innerHTML=`<div class="num">${esc(it.code)}</div><div>${esc(it.name)}${it.allergens?` <span class="all">(${esc(it.allergens)})</span>`:""}<div class="price">${esc(money(it.price))}</div></div>`;
+   sec.appendChild(line);
+   if(it.side){const s=document.createElement("div");s.className="menu-side";s.innerHTML=`<b>Príloha:</b> ${esc(it.side)}`;sec.appendChild(s)}
+   (it.extras||[]).forEach(ex=>{if(ex.text){const s=document.createElement("div");s.className="menu-side";s.innerHTML=`<b>${esc(ex.label)}:</b> ${esc(ex.text)}`;sec.appendChild(s)}})
  });
  return sec;
 }
@@ -539,17 +593,15 @@ function renderPreview(){
  $("pvPhone").textContent=state.phone?`Objednávky: ${state.phone}`:"";
  $("pvTitle").textContent=state.title;
  $("pvRange").textContent=`${fmt(state.days[0].date)} – ${fmt(state.days[4].date)}`;
- const left=$("leftCol"),right=$("rightCol");left.innerHTML="";right.innerHTML="";
- [0,1,2].forEach(i=>left.appendChild(dayBox(state.days[i])));
- [3,4].forEach(i=>right.appendChild(dayBox(state.days[i])));
- const info=document.createElement("div");info.className="info-box";
- info.innerHTML=`
-   <div class="info-title">Reštaurácia</div>
-   <div class="info-row"><b>Názov</b><span>${esc(state.restaurant)}</span></div>
-   <div class="info-row"><b>Adresa</b><span>${esc(state.address||"")}</span></div>
-   <div class="info-row"><b>Objednávky</b><span>${esc(state.phone||"")}</span></div>
-   <div class="info-row"><b>Kontakt</b><span>${esc(state.contactExtra||"")}</span></div>`;
- right.appendChild(info);
+ const host=$("fiveDays");
+ host.innerHTML="";
+ state.days.forEach(day=>host.appendChild(dayBox(day)));
+ const strip=$("restaurantStrip");
+ strip.innerHTML=`
+   <div><b>Reštaurácia</b>${esc(state.restaurant)}</div>
+   <div><b>Adresa</b>${esc(state.address||"")}</div>
+   <div><b>Objednávky</b>${esc(state.phone||"")}</div>
+   <div><b>Kontakt</b>${esc(state.contactExtra||"")}</div>`;
  fitPreview();
 }
 function fitPreview(){
@@ -596,6 +648,10 @@ $("dbClear").onclick=clearDb;$("dbSearch").oninput=renderDb;
 $("backupBtn").onclick=()=>{const b=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="menu-zaloha.json";a.click()};
 $("restoreBtn").onclick=()=>$("restoreFile").click();
 $("restoreFile").onchange=async e=>{const f=e.target.files[0];if(!f)return;try{state=JSON.parse(await f.text());save();renderMenu();renderDb();renderPreview()}catch(err){alert("Chybná záloha.")}};
+$("printBtn").onclick=()=>{
+  try{ window.print(); }
+  catch(e){ alert("Otvor stránku v Safari a potom stlač Tlačiť A4."); }
+};
 window.addEventListener("resize",fitPreview);
 
 renderMenu();renderDb();renderPreview();
